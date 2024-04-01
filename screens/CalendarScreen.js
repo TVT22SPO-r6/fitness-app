@@ -1,27 +1,6 @@
 import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { Calendar, LocaleConfig } from 'react-native-calendars';
-
-LocaleConfig.locales['en'] = {
-  monthNames: [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
-  ],
-  monthNamesShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-  dayNames: [ 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
-  dayNamesShort: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-};
-LocaleConfig.defaultLocale = 'en';
+import { View, StyleSheet, Button } from 'react-native';
+import { Calendar } from 'react-native-calendars';
 
 const CalendarScreen = () => {
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]); // Muunnetaan päivämäärä merkkijonoksi
@@ -32,9 +11,10 @@ const CalendarScreen = () => {
         current={selectedDate}
         onDayPress={(day) => setSelectedDate(day.dateString)} 
         monthFormat={'MMMM yyyy'}
-        firstDay={0}
+        firstDay={1}
         enableSwipeMonths={true}
-        locale={'en'}
+        hideExtraDays={false}
+        hideDayNames={false}
       />
     </View>
   );
