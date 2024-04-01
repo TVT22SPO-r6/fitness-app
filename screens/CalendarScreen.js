@@ -30,7 +30,7 @@ const CalendarScreen = () => {
     <View style={styles.container}>
       <Calendar
         current={selectedDate}
-        onDayPress={(day) => setSelectedDate(day.dateString)} // Päivän merkkijonon asettaminen
+        onDayPress={(day) => setSelectedDate(day.dateString)} 
         monthFormat={'MMMM yyyy'}
         firstDay={0}
         enableSwipeMonths={true}
