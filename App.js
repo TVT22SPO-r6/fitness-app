@@ -9,19 +9,13 @@ import NewWorkoutScreen from './screens/NewWorkoutScreen';
 import CurrentWorkoutScreen from './screens/CurrentWorkoutScreen';
 import CalendarScreen from './screens/CalendarScreen';
 import PastWorkoutScreen from './screens/PastWorkoutScreen';
-import MainAppbar from './components/MainAppbar';
 
 export default function App() {
     const Stack = createNativeStackNavigator();
     return (
         <NavigationContainer>
             <Stack.Navigator
-                initialRouteName='Home'
-                screenOptions={{header: (props) => {
-                    <MainAppbar {...props}
-                        backgroundColor={{backgroundColor: "#00a484"}}
-                        title="Home" />
-                }}}>
+                initialRouteName='Home'>
                 <Stack.Screen
                     name="Home"
                     component={HomeScreen}
