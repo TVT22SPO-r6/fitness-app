@@ -9,6 +9,8 @@ import NewWorkoutScreen from './screens/NewWorkoutScreen';
 import CurrentWorkoutScreen from './screens/CurrentWorkoutScreen';
 import CalendarScreen from './screens/CalendarScreen';
 import PastWorkoutScreen from './screens/PastWorkoutScreen';
+import TrainingRoutineScreen from './screens/TrainingRoutineScreen';
+import AlertNotification from './screens/Alert';
 
 export default function App() {
     const Stack = createNativeStackNavigator();
@@ -46,6 +48,11 @@ export default function App() {
                     component={PastWorkoutScreen}
                     options={{title: "Past Workout", headerTitle: "Past Workout"}}
                 />
+                <Stack.Screen
+                    name="Training Routine"
+                    component={TrainingRoutineScreen}
+                    options={{ title: "Add Training Routine", headerTitle: "Add training routine" }}
+/>
             </Stack.Navigator>
         </NavigationContainer>
     );
