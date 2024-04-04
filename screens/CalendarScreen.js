@@ -3,7 +3,7 @@ import { View, StyleSheet} from 'react-native';
 import { Calendar } from 'react-native-calendars';
 
 const CalendarScreen = () => {
-  const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]); // Muunnetaan päivämäärä merkkijonoksi
+  const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]); 
 
   return (
     <View style={styles.container}>
