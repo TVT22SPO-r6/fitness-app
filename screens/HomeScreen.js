@@ -1,6 +1,7 @@
 import { useLayoutEffect } from "react";
 import { Button, Text, View, StyleSheet, SafeAreaView } from "react-native";
 import WorkoutPlanScreen from "./WorkoutPlanScreen";
+import AlertNotification from "./Alert";
 
 export default function HomeScreen({navigation}){
     return (
@@ -11,6 +12,7 @@ export default function HomeScreen({navigation}){
             <Button title="Current Workout" onPress={() => navigation.navigate("Current Workout")}/>
             <Button title="Calendar" onPress={() => navigation.navigate("Calendar")}/>
             <Button title="Past Workout(s)" onPress={() => navigation.navigate("Past Workout")}/>
+            <Button title="Add training routine" onPress={() => navigation.navigate("Training Routine")}/>
         </SafeAreaView>
     );
 }
