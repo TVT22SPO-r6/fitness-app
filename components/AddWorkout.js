@@ -3,9 +3,8 @@ import SelectTime from './SelectTime';
 import SelectDate from './SelectDate';
 import NumericTextInput from './NumberInput';
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View} from 'react-native';
 import { TextInput, PaperProvider } from 'react-native-paper';
-import { SafeAreaProvider } from "react-native-safe-area-context";
 
 class AddWorkout extends Component {
   render() {
@@ -19,7 +18,7 @@ class AddWorkout extends Component {
             <SelectTime label="Start Time" />
             <SelectTime label="End Time" />
           </View>
-          <NumericTextInput label='Distance'/>
+          <NumericTextInput label='Distance (km)'/>
           <TextInput placeholder='Notes'/>
         </>
       ),
@@ -30,7 +29,7 @@ class AddWorkout extends Component {
             <SelectTime label="Start Time" />
             <SelectTime label="End Time" />
           </View>
-          <NumericTextInput label='Distance'/>
+          <NumericTextInput label='Distance (km)'/>
           <TextInput placeholder='Notes'/>
         </>
       ),

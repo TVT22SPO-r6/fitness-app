@@ -1,17 +1,7 @@
-import { NavigationContainer } from '@react-navigation/native';
-import {
-  Appbar,
-  DarkTheme,
-  DefaultTheme,
-  Provider,
-  Surface,
-  ThemeProvider,
-  PaperProvider
-} from "react-native-paper";
+import {PaperProvider} from "react-native-paper";
 import React, { useState } from "react";
-import { SafeAreaView, StatusBar, StyleSheet, View } from "react-native";
+import {StyleSheet, View } from "react-native";
 import DropDown from "react-native-paper-dropdown";
-import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import AddWorkout from '../components/AddWorkout';
 
 export default function NewWorkoutScreen(){
@@ -37,20 +27,16 @@ export default function NewWorkoutScreen(){
   ];
     return (
         <PaperProvider>
-        <Surface style={styles.containerStyle}>
-          <SafeAreaView style={styles.safeContainerStyle}>
-            <DropDown
-              label={"Workout Type"}
-              mode={"outlined"}
-              visible={showDropDown}
-              showDropDown={() => setShowDropDown(true)}
-              onDismiss={() => setShowDropDown(false)}
-              value={workoutType}
-              setValue={setWorkoutType}
-              list={workoutTypeList}
-            />
-          </SafeAreaView>
-        </Surface>
+        <DropDown
+            label={"Workout Type"}
+            mode={"outlined"}
+            visible={showDropDown}
+            showDropDown={() => setShowDropDown(true)}
+            onDismiss={() => setShowDropDown(false)}
+            value={workoutType}
+            setValue={setWorkoutType}
+            list={workoutTypeList}
+        />
         <AddWorkout wType={workoutType}/>
         </PaperProvider>
     );

@@ -1,8 +1,7 @@
 import {useState, useCallback, useEffect} from 'react'
-import { View, Text, Pressable} from "react-native";
-import { Button, TextInput } from 'react-native-paper';
+import {Pressable} from "react-native";
+import {TextInput} from 'react-native-paper';
 import { TimePickerModal} from 'react-native-paper-dates';
-import { SafeAreaProvider } from "react-native-safe-area-context";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
