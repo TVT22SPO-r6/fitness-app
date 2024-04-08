@@ -6,40 +6,79 @@ const infoText = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed d
 export default function PastWorkoutScreen(){
     const [testDate, testTime] = new Date().toISOString().split("T")
 
+    /*
     const testWorkout = {
         title: "Running",
         workoutDate: testDate,
         workoutTime: testTime.slice(0, 5),
         info: {
-            duration: "48:33",      // min:sec
+            duration: "0:48:33",      // min:sec
             distance: "5 km",
             caloriesBurned: "1200 kcal"
         }
+    }*/
+    const testWorkout = {
+        title: "Workout",
+        workoutDate: testDate,
+        workoutTime: testTime.slice(0, 5),
+        info: {
+            duration: "1:05:24",
+            workout: {
+                exercise1: "2x5 25kg",
+                exercise2: "2x5 25kg",
+                exercise3: "2x5 25kg",
+                exercise4: "2x5 25kg",
+                exercise5: "2x5 25kg",
+            }
+        }
     }
-
-    return (
-        <View style={styles.container}>
-            <View style={styles.titleBox}>
-                <Text style={styles.titleFont} >{testWorkout.title}</Text>
-                <Text>{testWorkout.workoutDate}</Text>
-                <Text>{testWorkout.workoutTime}</Text>
+    if(testWorkout.title === "Running"){
+        return (
+            <View style={styles.container}>
+                <View style={styles.titleBox}>
+                    <Text style={styles.titleFont} >{testWorkout.title}</Text>
+                    <Text>{testWorkout.workoutDate}</Text>
+                    <Text>{testWorkout.workoutTime}</Text>
+                </View>
+                <View style={styles.infoBox}>
+                    <Text style={styles.infoText}>
+                        <Text style={{fontWeight: "bold"}}>Duration:                   </Text>
+                        <Text style={{textAlign: "right"}}>{testWorkout.info.duration}</Text>
+                    </Text>
+                    <Text style={styles.infoText}>
+                        <Text style={{fontWeight: "bold"}}>Distance:                   </Text>
+                        <Text style={{textAlign: "right"}}>{testWorkout.info.distance}</Text>
+                    </Text>
+                    <Text style={styles.infoText}>
+                        <Text style={{fontWeight: "bold"}}>Calories Burned:     </Text>
+                        <Text style={{textAlign: "right"}}>{testWorkout.info.caloriesBurned}</Text>
+                    </Text>
+                </View>
             </View>
-            <View style={styles.infoBox}>
-                <Text style={styles.infoText}>
-                    <Text style={{fontWeight: "bold"}}>Duration:   </Text>
-                    <Text style={{textAlign: "right"}}>{testWorkout.info.duration}</Text>
-                </Text>
-                <Text style={styles.infoText}>
-                    <Text style={{fontWeight: "bold"}}>Distance:   </Text>
-                    <Text style={{textAlign: "right"}}>{testWorkout.info.distance}</Text>
-                </Text>
-                <Text style={styles.infoText}>
-                    <Text style={{fontWeight: "bold"}}>Calories Burned:   </Text>
-                    <Text style={{textAlign: "right"}}>{testWorkout.info.caloriesBurned}</Text>
-                </Text>
+        );
+    }else if(testWorkout.title === "Workout"){
+        return (
+            <View style={styles.container}>
+                <View style={styles.titleBox}>
+                    <Text style={styles.titleFont} >{testWorkout.title}</Text>
+                    <Text>{testWorkout.workoutDate}</Text>
+                    <Text>{testWorkout.workoutTime}</Text>
+                </View>
+                <View style={styles.infoBox}>
+                    <Text style={styles.infoText}>
+                        <Text style={{fontWeight: "bold"}}>Duration:                   </Text>
+                        <Text style={{textAlign: "right"}}>{testWorkout.info.duration}</Text>
+                    </Text>
+                    {Object.entries(testWorkout.info.workout).map(([key, value]) => (
+                        <Text style={styles.infoText} key={key}>
+                            <Text style={{fontWeight: "bold"}}>{key}:                 </Text>
+                            <Text style={{textAlign: "right"}}>{value}</Text>
+                        </Text>
+                    ))}
+                </View>
             </View>
-        </View>
-    );
+        );
+    }
 }
 
 const styles = StyleSheet.create({
@@ -59,7 +98,9 @@ const styles = StyleSheet.create({
         marginHorizontal: 25,
         marginVertical: 10,
         alignItems: "center",
-        justifyContent: "center"
+        justifyContent: "center",
+        backgroundColor: "chartreuse",
+        minWidth: 350,
     },
     infoBox: {
         flex: 12,
@@ -70,6 +111,8 @@ const styles = StyleSheet.create({
         //paddingHorizontal: 100,
         marginHorizontal: 25,
         marginVertical: 20,
+        minWidth: 350,
+        backgroundColor: "chartreuse"
     },
     infoText: {
         fontSize: 16,
