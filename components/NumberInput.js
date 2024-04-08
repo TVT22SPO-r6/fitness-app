@@ -1,13 +1,13 @@
-import * as React from 'react'
+import {useState} from 'react'
 import { TextInput, HelperText } from 'react-native-paper'
 
-const NumericTextInput = ({label}) => {
-  const [text, setText] = React.useState('')
+const NumericTextInput = ({label, onNumChange}) => {
+  const [text, setText] = useState('')
   
-  const [error, setError] = React.useState('')
+  const [error, setError] = useState('')
 
   const handleTextChange = newText => {
-    setText(newText); // Just update the text state on text change
+    setText(newText); 
   }
 
   const handleBlur = () => {
@@ -17,6 +17,7 @@ const NumericTextInput = ({label}) => {
       setError('Number must be between 0 and 200');
     } else {
       setError('');
+      onNumChange(num);
     }
   }
 

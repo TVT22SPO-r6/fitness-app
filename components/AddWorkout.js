@@ -2,11 +2,17 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import SelectTime from './SelectTime';
 import SelectDate from './SelectDate';
 import NumericTextInput from './NumberInput';
-import React, { Component } from 'react';
+import React, {useState, Component} from 'react';
 import { View} from 'react-native';
 import { TextInput, PaperProvider } from 'react-native-paper';
 
 class AddWorkout extends Component {
+    const [numFromChild, setNumFromChild] = useState(null)
+
+    const handleNumChange = (num) => {
+      setNumFromChild(num);
+    }
+    
   render() {
     const { wType } = this.props;
 
