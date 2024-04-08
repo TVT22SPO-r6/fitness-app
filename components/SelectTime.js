@@ -1,44 +1,47 @@
-import {useState, useCallback, useEffect} from 'react'
-import {Pressable} from "react-native";
-import {TextInput} from 'react-native-paper';
-import { TimePickerModal} from 'react-native-paper-dates';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, {useState} from "react"
+import {Pressable} from "react-native"
+import { TextInput } from 'react-native-paper'
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 
-export default function SelectTime(props) {
-    const [visible, setVisible] = useState(false)
-    const [time, setTime] = useState("0:00")
-    const onDismiss = useCallback(() => {
-        setVisible(false)
-    }, [setVisible])
+export default function SelectTime({label, onTimeChange}) {
+  const [time, setTime] = useState("0:00")
+  const [show, setShow] = useState(false)
 
-    const onConfirm = useCallback(
-    ({ hours, minutes }) => {
-      setVisible(false);
-      console.log({ hours, minutes });
-      setTime(hours.toString() + ":"+ minutes.toString())
-    },
-    [setVisible]
-    );
+  const onChange = (event, selectedTime) => {
+    const currentTime = selectedTime
+    setShow(false)
+    setTime(currentTime.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}))
+    onTimeChange(currentTime.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}))
+  }
+
+  const showTimepicker = () => {
+    setShow(true)
+  }
 
   return (
-      <>
-        <Pressable onPressIn={() => setVisible(true)} uppercase={false} mode="outlined">
+    <>
+      <Pressable onPressIn={showTimepicker} uppercase={false} mode="outlined">
           <TextInput
             mode="outlined"
-            label={props.label}
+            label={label}
             value={time}
             editable={false}
             selectTextOnFocus={false}
           />
         </Pressable>
-        <TimePickerModal
-          visible={visible}
-          onDismiss={onDismiss}
-          onConfirm={onConfirm}
-          hours={12}
-          minutes={0}
+      {show && (
+        <DateTimePicker
+          testID="dateTimePicker"
+          value={new Date()}
+          mode="time"
+          is24Hour={true}
+          onChange={onChange}
+          maximumDate={new Date()}
+
         />
-      </>
-  );
+      )}
+    </>
+  )
+
 }
