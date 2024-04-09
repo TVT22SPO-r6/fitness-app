@@ -15,8 +15,8 @@ export default function AddWorkout(props) {
     const [visible, setVisible] = useState(false)
     const navigation = useNavigation()
 
-    const handleDateChange = (dateWithoutTime) => {
-      setDateFromChild(dateWithoutTime)
+    const handleDateChange = (dateOnly) => {
+      setDateFromChild(dateOnly)
     }
     const handleStartTimeChange = (time) => {
       setStartTimeFromChild(time)

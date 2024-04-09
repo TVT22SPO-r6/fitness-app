@@ -10,10 +10,10 @@ export default function SelectTime({label, onTimeChange}) {
   const initialTime = new Date()
 
   const onChange = (event, selectedTime) => {
-    const currentTime = selectedTime
+    const timeOnly = new Date (1970, 0, 1, selectedTime.getHours(), selectedTime.getMinutes(), 0, 0)
     setShow(false)
-    setTime(currentTime)
-    onTimeChange(currentTime.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}))
+    setTime(timeOnly)
+    onTimeChange(timeOnly.toISOString())
   }
 
   const showTimepicker = () => {

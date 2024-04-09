@@ -10,11 +10,11 @@ export default function SelectDate({onDateChange}) {
   const initialDate = new Date()
 
   const onChange = (event, selectedDate) => {
-    const dateWithoutTime = new Date(selectedDate)
-    dateWithoutTime.setHours(0,0,0,0)
+    const dateOnly = new Date(selectedDate)
+    dateOnly.setHours(0,0,0,0)
     setShow(false)
-    setDate(dateWithoutTime)
-    onDateChange(dateWithoutTime.toISOString())
+    setDate(dateOnly)
+    onDateChange(dateOnly.toISOString())
   }
 
   const showDatepicker = () => {
