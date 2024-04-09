@@ -50,7 +50,7 @@ const AddEventButton = ({ onAddEvent }) => {
 
   return (
     <View style={styles.container}>
-      <Button title="Add Event" onPress={() => setModalVisible(true)} />
+      <Button title="Add event" onPress={() => setModalVisible(true)} />
       <Modal visible={modalVisible} animationType="slide">
         <View style={styles.modalContainer}>
           <TextInput
