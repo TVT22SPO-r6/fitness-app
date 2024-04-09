@@ -5,14 +5,16 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 
 
 export default function SelectDate({onDateChange}) {
-  const [date, setDate] = useState(new Date())
+  const [date, setDate] = useState(undefined)
   const [show, setShow] = useState(false)
+  const initialDate = new Date()
 
   const onChange = (event, selectedDate) => {
-    const currentDate = selectedDate
+    const dateWithoutTime = new Date(selectedDate)
+    dateWithoutTime.setHours(0,0,0,0)
     setShow(false)
-    setDate(currentDate)
-    onDateChange(currentDate.toLocaleDateString())
+    setDate(dateWithoutTime)
+    onDateChange(dateWithoutTime.toISOString())
   }
 
   const showDatepicker = () => {
@@ -25,7 +27,7 @@ export default function SelectDate({onDateChange}) {
           <TextInput
             mode="outlined"
             label="Date"
-            value={date.toLocaleDateString()}
+            value={date ? date.toLocaleDateString(): "Date"}
             editable={false}
             selectTextOnFocus={false}
           />
@@ -33,7 +35,7 @@ export default function SelectDate({onDateChange}) {
       {show && (
         <DateTimePicker
           testID="dateTimePicker"
-          value={date}
+          value={date ? date : initialDate}
           mode="date"
           is24Hour={true}
           onChange={onChange}
