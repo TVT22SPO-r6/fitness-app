@@ -3,6 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 import SelectTime from './SelectTime';
 import SelectDate from './SelectDate';
 import NumericTextInput from './NumberInput';
+import ViewAllData from "../components/ViewAllData";
 import {useState, Component} from 'react';
 import { View} from 'react-native';
 import { TextInput, PaperProvider, Text, Button, Portal, Dialog} from 'react-native-paper';
@@ -106,6 +107,11 @@ export default function AddWorkout(props) {
           </View>
           <NumericTextInput label='Distance (km)'/>
           <TextInput placeholder='Notes'/>
+        </>
+      ),
+      "savedData": (
+        <>
+          <ViewAllData/>
         </>
       ),
     };

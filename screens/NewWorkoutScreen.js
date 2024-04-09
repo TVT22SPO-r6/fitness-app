@@ -24,6 +24,10 @@ export default function NewWorkoutScreen(){
       label: "Others",
       value: "others",
     },
+    {
+      label: "All Saved Data",
+      value: "savedData",
+    },
   ];
     return (
         <PaperProvider>
