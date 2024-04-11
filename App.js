@@ -1,3 +1,4 @@
+// App.js
 import { NavigationContainer } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
@@ -11,10 +12,13 @@ import CalendarScreen from './screens/CalendarScreen';
 import PastWorkoutScreen from './screens/PastWorkoutScreen';
 import TrainingRoutineScreen from './screens/TrainingRoutineScreen';
 import AlertNotification from './screens/Alert';
+import Clock from './screens/Clock';
+import { TimerProvider } from './screens/TimerContext';
 
 export default function App() {
     const Stack = createNativeStackNavigator();
     return (
+        <TimerProvider>
         <NavigationContainer>
             <Stack.Navigator
                 initialRouteName='Home'>
@@ -52,9 +56,15 @@ export default function App() {
                     name="Training Routine"
                     component={TrainingRoutineScreen}
                     options={{ title: "Add Training Routine", headerTitle: "Add training routine" }}
+                    />
+                <Stack.Screen
+                    name="Clock"
+                    component={Clock}
+                    options={{ title: "Clock", headerTitle: "Clock" }}
 />
             </Stack.Navigator>
         </NavigationContainer>
+        </TimerProvider>
     );
 }
 
