@@ -1,3 +1,4 @@
+// HomeScreen.js
 import { useLayoutEffect } from "react";
 import { Button, Text, View, StyleSheet, SafeAreaView } from "react-native";
 import WorkoutPlanScreen from "./WorkoutPlanScreen";
@@ -13,6 +14,7 @@ export default function HomeScreen({navigation}){
             <Button title="Calendar" onPress={() => navigation.navigate("Calendar")}/>
             <Button title="Past Workout(s)" onPress={() => navigation.navigate("Past Workout")}/>
             <Button title="Add training routine" onPress={() => navigation.navigate("Training Routine")}/>
+            <Button title="Clock" onPress={() => navigation.navigate("Clock")}/>
         </SafeAreaView>
     );
 }
