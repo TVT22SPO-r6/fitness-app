@@ -11,7 +11,7 @@ import CurrentWorkoutScreen from './screens/CurrentWorkoutScreen';
 import CalendarScreen from './screens/CalendarScreen';
 import PastWorkoutScreen from './screens/PastWorkoutScreen';
 import TrainingRoutineScreen from './screens/TrainingRoutineScreen';
-import AlertNotification from './screens/Alert';
+import AlertNotification from './components/AlertNotification';
 import Clock from './screens/Clock';
 import { TimerProvider } from './screens/TimerContext';
 
