@@ -47,12 +47,13 @@ export default function App() {
                     name="Past Workout"
                     component={PastWorkoutScreen}
                     options={{title: "Past Workout", headerTitle: "Past Workout"}}
+                    initialParams={{workoutId: null}}
                 />
                 <Stack.Screen
                     name="Training Routine"
                     component={TrainingRoutineScreen}
                     options={{ title: "Add Training Routine", headerTitle: "Add training routine" }}
-/>
+                />
             </Stack.Navigator>
         </NavigationContainer>
     );
