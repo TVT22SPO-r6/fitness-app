@@ -48,25 +48,6 @@ export default function PastWorkoutScreen({route}){
             console.error('Error fetching data:', error);
         }
     };
-
-    const addItemToLocal = async (id, title, date, startTime, endTime, duration, num) => {
-        try {
-            // Retrieve existing items from local storage
-            const existingItems = await AsyncStorage.getItem('myData');
-            const parsedItems = existingItems ? JSON.parse(existingItems) : [];
-
-            // Add the new item
-            parsedItems.push({id, title, date, startTime, endTime, duration, num });
-
-            // Save the updated items back to local storage
-            await AsyncStorage.setItem('myData', JSON.stringify(parsedItems));
-
-            console.log('Item added to local storage successfully');
-            console.log('Current data saved' + JSON.stringify(parsedItems));
-        } catch (error) {
-            console.error('Error adding item to local storage:', error);
-        }
-    }
     
     useEffect(() => {
         fetchData();
