@@ -9,7 +9,6 @@ const CalendarScreen = () => {
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
   const [events, setEvents] = useState([]);
 
-  // Lisätään uusi tapahtuma
   const handleAddEvent = (description, eventDateTime) => {
     const newEvent = { description, eventDate: eventDateTime };
     setEvents([...events, newEvent]);
