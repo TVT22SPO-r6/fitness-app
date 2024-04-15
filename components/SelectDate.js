@@ -9,11 +9,13 @@ export default function SelectDate({ onDateChange }) {
 
     const onChange = (event, selectedDate) => {
         if (selectedDate) {
-            setDate(selectedDate); // set the newly selected date
-            onDateChange(selectedDate.toISOString()); // communicate the date back to the parent
+            setDate(selectedDate);
+            console.log("New Date Selected:", selectedDate);  // Debug log
+            onDateChange(selectedDate.toISOString());
             setShow(false);
         }
     };
+    
       
   
 
