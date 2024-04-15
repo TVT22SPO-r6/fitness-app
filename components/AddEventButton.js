@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Modal, TextInput, Button } from 'react-native';
-import DateTimePicker from '@react-native-community/datetimepicker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import DateTimePicker from '@react-native-community/datetimepicker'
 
 const AddEventButton = ({ onAddEvent }) => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -50,7 +50,7 @@ const AddEventButton = ({ onAddEvent }) => {
 
   return (
     <View style={styles.container}>
-      <Button title="Add event" onPress={() => setModalVisible(true)} />
+      <Button title="Add Event" onPress={() => setModalVisible(true)} />
       <Modal visible={modalVisible} animationType="slide">
         <View style={styles.modalContainer}>
           <TextInput
