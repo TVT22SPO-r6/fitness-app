@@ -47,26 +47,35 @@ export default function AddWorkout(props) {
         }
     };
 
-    const saveDataAndReset = async (date, startTime, endTime, num, notes) => {
-        if (date === null || startTime === null || endTime === null || num === null || notes === '') {
+    const saveDataAndReset = async () => {
+        // Check all required fields to ensure they are not null, undefined, or empty as applicable
+        if (!dateFromChild || !startTimeFromChild || !endTimeFromChild || numFromChild === null || notes.trim() === '') {
             console.error('Error: One or more values are incomplete');
             showDialog();
             return;
         }
-
-        await addItemToLocal(date, startTime, endTime, num, notes);
-
-        // Optional: Navigate to 'Current Workout' with the new workout details
-        setCurrentWorkout({ type: props.wType, date, startTime, endTime, num, notes });
-navigation.navigate('Current Workout', { workout: { date, startTime, endTime, num, notes }});
-
-
-
-        setDateFromChild(null);
-        setStartTimeFromChild(null);
-        setEndTimeFromChild(null);
-        setNumFromChild(null);
-        setNotes('');
+    
+        try {
+            const existingItems = await AsyncStorage.getItem('myData');
+            const parsedItems = existingItems ? JSON.parse(existingItems) : [];
+            const newItem = { date: dateFromChild, startTime: startTimeFromChild, endTime: endTimeFromChild, num: numFromChild, notes };
+            parsedItems.push(newItem);
+    
+            await AsyncStorage.setItem('myData', JSON.stringify(parsedItems));
+            console.log('Item added to local storage successfully');
+    
+            setCurrentWorkout({ type: props.wType, date: dateFromChild, startTime: startTimeFromChild, endTime: endTimeFromChild, num: numFromChild, notes });
+            navigation.navigate('Current Workout', { workout: newItem });
+    
+            // Reset fields
+            setDateFromChild(null);
+            setStartTimeFromChild(null);
+            setEndTimeFromChild(null);
+            setNumFromChild(null);
+            setNotes('');
+        } catch (error) {
+            console.error('Error adding item to local storage:', error);
+        }
     };
 
     const showDialog = () => setVisible(true);
