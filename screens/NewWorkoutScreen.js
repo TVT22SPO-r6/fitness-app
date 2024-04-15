@@ -1,6 +1,6 @@
 import {PaperProvider} from "react-native-paper";
 import React, { useState } from "react";
-import {StyleSheet, View } from "react-native";
+import {StyleSheet, ScrollView } from "react-native";
 import DropDown from "react-native-paper-dropdown";
 import AddWorkout from '../components/AddWorkout';
 
@@ -23,6 +23,14 @@ export default function NewWorkoutScreen(){
       value: "weights",
     },
     {
+      label: "Push-Ups",
+      value: "pushups",
+    },
+    {
+      label: "Squats",
+      value: "squats",
+    },
+    {
       label: "Others",
       value: "others",
     },
@@ -32,21 +40,24 @@ export default function NewWorkoutScreen(){
     },
   ];
 
-  return (
-      <PaperProvider>
-      <DropDown
-          label={"Workout Type"}
-          mode={"outlined"}
-          visible={showDropDown}
-          showDropDown={() => setShowDropDown(true)}
-          onDismiss={() => setShowDropDown(false)}
-          value={workoutType}
-          setValue={setWorkoutType}
-          list={workoutTypeList}
-      />
-      <AddWorkout wType={workoutType}/>
-      </PaperProvider>
-  );
+    return (
+        <PaperProvider>
+          <ScrollView>
+        <DropDown
+            label={"Workout Type"}
+            mode={"outlined"}
+            visible={showDropDown}
+            showDropDown={() => setShowDropDown(true)}
+            onDismiss={() => setShowDropDown(false)}
+            value={workoutType}
+            setValue={setWorkoutType}
+            list={workoutTypeList}
+        />
+        <AddWorkout wType={workoutType}/>
+        </ScrollView>
+        </PaperProvider>
+    );
+
 }
 
 const styles = StyleSheet.create({
