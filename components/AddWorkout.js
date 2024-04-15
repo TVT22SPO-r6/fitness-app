@@ -10,8 +10,8 @@ import { View } from 'react-native';
 import { TextInput, PaperProvider, Text, Button, Portal, Dialog } from 'react-native-paper';
 
 export default function AddWorkout(props) {
-    const [dateFromChild, setDateFromChild] = useState(null);
     const [startTimeFromChild, setStartTimeFromChild] = useState(null);
+    const [dateFromChild, setDateFromChild] = useState(new Date().toISOString());
     const [endTimeFromChild, setEndTimeFromChild] = useState(null);
     const [numFromChild, setNumFromChild] = useState(null);
     const [notes, setNotes] = useState('');
