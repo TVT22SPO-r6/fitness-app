@@ -8,11 +8,12 @@ const NumericTextInput = ({label, onNumChange, minVal, maxVal}) => {
 
   const handleTextChange = newText => {
     setText(newText)
+    validateAndSend(newText)
   }
 
-  const handleBlur = () => {
+  const validateAndSend = newText => {
     // Validation: Check if the input is a valid number between 0 and 200
-    const num = parseFloat(text.replace(',', '.')); // Replace commas with dots for consistency
+    const num = parseFloat(newText.replace(',', '.')); // Replace commas with dots for consistency
     if (isNaN(num) || num < minVal || num > maxVal) {
       setError(`Number must be between ${minVal} and ${maxVal}`)
     } else {
@@ -27,7 +28,6 @@ const NumericTextInput = ({label, onNumChange, minVal, maxVal}) => {
             label={label}
             value={text}
             onChangeText={handleTextChange}
-            onBlur={handleBlur}
             keyboardType="numeric"
         />
         <HelperText type="error" visible={error !== ''}>

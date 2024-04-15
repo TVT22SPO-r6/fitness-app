@@ -11,7 +11,7 @@ const ViewAllData = () => {
 
   const fetchData = async () => {
     try {
-      const jsonValue = await AsyncStorage.getItem('myData');
+      const jsonValue = await AsyncStorage.getItem('savedWorkouts');
       if (jsonValue !== null) {
         const parsedData = JSON.parse(jsonValue);
         setData(parsedData);
@@ -25,10 +25,24 @@ const ViewAllData = () => {
     <View>
       {data.map((item, index) => (
         <View key={index}>
+          <Text>wType: {item.wType}</Text>
           <Text>Date: {item.date}</Text>
           <Text>Start Time: {item.startTime}</Text>
           <Text>End Time: {item.endTime}</Text>
-          <Text>Number: {item.num}</Text>
+          <Text>Distance: {item.distance}</Text>
+          <Text>Intensity: {item.intensity}</Text>
+          <Text>Notes: {item.notes}</Text>
+            {item.restTimes && item.restTimes.length > 0 ? (
+            item.restTimes.map((restTime, index) => (
+              <View key={index}>
+                <Text>Rest Time {index}:</Text>
+                <Text>Start Time: {restTime.startTime}</Text>
+                <Text>End Time: {restTime.endTime}</Text>
+              </View>
+            ))
+            ) : (
+              <Text>No rest times available</Text>
+            )}
         </View>
       ))}
     </View>
