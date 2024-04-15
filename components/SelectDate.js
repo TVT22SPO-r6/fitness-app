@@ -8,11 +8,14 @@ export default function SelectDate({ onDateChange }) {
     const [show, setShow] = useState(false);
 
     const onChange = (event, selectedDate) => {
-        const currentDate = selectedDate || date;
-        setShow(false);
-        setDate(currentDate);
-        onDateChange(currentDate.toISOString());
+        if (selectedDate) {
+            setDate(selectedDate); // set the newly selected date
+            onDateChange(selectedDate.toISOString()); // communicate the date back to the parent
+            setShow(false);
+        }
     };
+      
+  
 
     const showDatepicker = () => {
         setShow(true);
@@ -20,7 +23,7 @@ export default function SelectDate({ onDateChange }) {
 
     return (
         <>
-            <Pressable onPress={showDatepicker} mode="outlined">
+            <Pressable onPress={showDatepicker}>
                 <TextInput
                     mode="outlined"
                     label="Date"
