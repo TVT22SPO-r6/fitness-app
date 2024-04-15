@@ -19,8 +19,9 @@ export default function AddWorkout(props) {
     const navigation = useNavigation();
     const { setCurrentWorkout } = useWorkout();
 
-    const handleDateChange = (dateOnly) => {
-        setDateFromChild(dateOnly);
+    const handleDateChange = (isoDate) => {
+        console.log("Received date from SelectDate:", isoDate);
+        setDateFromChild(isoDate);
     };
     const handleStartTimeChange = (time) => {
         setStartTimeFromChild(time);
@@ -48,9 +49,9 @@ export default function AddWorkout(props) {
     };
 
     const saveDataAndReset = async () => {
-        // Check all required fields to ensure they are not null, undefined, or empty as applicable
         if (!dateFromChild || !startTimeFromChild || !endTimeFromChild || numFromChild === null || notes.trim() === '') {
             console.error('Error: One or more values are incomplete');
+            console.log({ dateFromChild, startTimeFromChild, endTimeFromChild, numFromChild, notes });
             showDialog();
             return;
         }
@@ -116,6 +117,7 @@ export default function AddWorkout(props) {
             <>
                 <View style={{ flexDirection: 'row' }}>
                     <SelectDate onDateChange={handleDateChange} />
+                    <SelectDate key={Date.now()} onDateChange={handleDateChange} />
                     <SelectTime label="Start Time" onTimeChange={handleStartTimeChange} />
                     <SelectTime label="End Time" onTimeChange={handleEndTimeChange} />
                 </View>
