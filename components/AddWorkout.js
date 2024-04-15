@@ -1,3 +1,4 @@
+
 import { View} from 'react-native';
 import AddBiking from './AddBiking';
 import ViewAllData from './ViewAllData';
@@ -31,4 +32,5 @@ return (
     {content}
   </PaperProvider>
 );
+
 }

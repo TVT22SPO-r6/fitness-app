@@ -7,6 +7,8 @@ import AddWorkout from '../components/AddWorkout';
 export default function NewWorkoutScreen(){
   const [showDropDown, setShowDropDown] = useState(false);
   const [workoutType, setWorkoutType] = useState('');
+
+  // Expanded workout type list including handling for additional types.
   const workoutTypeList = [
     {
       label: "Biking",
@@ -37,6 +39,7 @@ export default function NewWorkoutScreen(){
       value: "savedData",
     },
   ];
+
     return (
         <PaperProvider>
           <ScrollView>
@@ -54,6 +57,7 @@ export default function NewWorkoutScreen(){
         </ScrollView>
         </PaperProvider>
     );
+
 }
 
 const styles = StyleSheet.create({

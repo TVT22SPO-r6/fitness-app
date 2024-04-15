@@ -10,14 +10,15 @@ import NewWorkoutScreen from './screens/NewWorkoutScreen';
 import CurrentWorkoutScreen from './screens/CurrentWorkoutScreen';
 import CalendarScreen from './screens/CalendarScreen';
 import PastWorkoutScreen from './screens/PastWorkoutScreen';
-import TrainingRoutineScreen from './screens/TrainingRoutineScreen';
 import AlertNotification from './components/AlertNotification';
 import Clock from './screens/Clock';
 import { TimerProvider } from './screens/TimerContext';
+import { WorkoutProvider } from './components/WorkoutContext';
 
 export default function App() {
     const Stack = createNativeStackNavigator();
     return (
+        <WorkoutProvider>
         <TimerProvider>
             <NavigationContainer>
                 <Stack.Navigator
@@ -54,11 +55,6 @@ export default function App() {
                         initialParams={{workoutId: null}}
                     />
                     <Stack.Screen
-                        name="Training Routine"
-                        component={TrainingRoutineScreen}
-                        options={{ title: "Add Training Routine", headerTitle: "Add training routine" }}
-                        />
-                    <Stack.Screen
                         name="Clock"
                         component={Clock}
                         options={{ title: "Clock", headerTitle: "Clock" }}
@@ -66,6 +62,7 @@ export default function App() {
                 </Stack.Navigator>
             </NavigationContainer>
         </TimerProvider>
+        </WorkoutProvider>
     );
 }
 

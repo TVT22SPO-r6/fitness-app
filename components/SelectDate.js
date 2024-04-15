@@ -1,49 +1,49 @@
-import React, {useState} from "react"
-import {Pressable} from "react-native"
-import { TextInput } from 'react-native-paper'
+import React, { useState } from "react";
+import { Pressable } from "react-native";
+import { TextInput } from 'react-native-paper';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
+export default function SelectDate({ onDateChange }) {
+    const [date, setDate] = useState(new Date());
+    const [show, setShow] = useState(false);
 
-export default function SelectDate({onDateChange}) {
-  const [date, setDate] = useState(undefined)
-  const [show, setShow] = useState(false)
-  const initialDate = new Date()
+    const onChange = (event, selectedDate) => {
+        if (selectedDate) {
+            setDate(selectedDate);
+            console.log("New Date Selected:", selectedDate);  // Debug log
+            onDateChange(selectedDate.toISOString());
+            setShow(false);
+        }
+    };
+    
+      
+  
 
-  const onChange = (event, selectedDate) => {
-    const dateOnly = new Date(selectedDate)
-    dateOnly.setHours(0,0,0,0)
-    setShow(false)
-    setDate(dateOnly)
-    onDateChange(dateOnly.toISOString())
-  }
+    const showDatepicker = () => {
+        setShow(true);
+    };
 
-  const showDatepicker = () => {
-    setShow(true)
-  }
-
-  return (
-    <>
-      <Pressable onPressIn={showDatepicker} uppercase={false} mode="outlined">
-          <TextInput
-            mode="outlined"
-            label="Date"
-            value={date ? date.toLocaleDateString(): "Date"}
-            editable={false}
-            selectTextOnFocus={false}
-          />
-        </Pressable>
-      {show && (
-        <DateTimePicker
-          testID="dateTimePicker"
-          value={date ? date : initialDate}
-          mode="date"
-          is24Hour={true}
-          onChange={onChange}
-          maximumDate={new Date()}
-
-        />
-      )}
-    </>
-  )
-
+    return (
+        <>
+            <Pressable onPress={showDatepicker}>
+                <TextInput
+                    mode="outlined"
+                    label="Date"
+                    value={date.toLocaleDateString()}
+                    editable={false}
+                    selectTextOnFocus={false}
+                />
+            </Pressable>
+            {show && (
+                <DateTimePicker
+                    testID="dateTimePicker"
+                    value={date}
+                    mode="date"
+                    display="default"
+                    onChange={onChange}
+                    maximumDate={new Date(2030, 11, 31)} // Set to a future date, e.g., December 31, 2030
+                />
+            )}
+        </>
+    );
 }
