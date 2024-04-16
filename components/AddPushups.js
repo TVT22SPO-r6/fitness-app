@@ -9,12 +9,12 @@ import {useState, Component} from 'react';
 import { View} from 'react-native';
 import { TextInput, PaperProvider, Text, Button, Portal, Dialog} from 'react-native-paper';
 
-export default function AddBiking() {
-    const wType  = "biking"
+export default function AddPushups() {
+    const wType  = "pushups"
     const [dateFromChild, setDateFromChild] = useState(null)
     const [startTimeFromChild, setStartTimeFromChild] = useState(null)
     const [endTimeFromChild, setEndTimeFromChild] = useState(null)
-    const [numFromChild, setNumFromChild] = useState(null)
+    const [repsFromChild, setRepsFromChild] = useState(null)
     const [intensity, setIntensity] = useState(null)
     const [notes, setNotes] = useState(null)
     const [allRestTimes, setAllRestTimes] = useState([]);
@@ -33,7 +33,7 @@ export default function AddBiking() {
       setEndTimeFromChild(time)
     }
     const handleNumChange = (num) => {
-      setNumFromChild(num)
+      setRepsFromChild(num)
     }
     const handleNumberSelect = (number) => {
       setIntensity(number)
@@ -44,21 +44,21 @@ export default function AddBiking() {
     const handleRestTimesChange = (newRestTimes) => {
     setAllRestTimes(newRestTimes);
     }
-    
-    const saveDataAndReset = async (wType, date, startTime, endTime, distance, intensity, notes, restTimes) => {
+
+    const saveDataAndReset = async (wType, date, startTime, endTime, reps, intensity, notes, restTimes) => {
       
-      if (date === null || startTime === null || endTime === null || distance === null || intensity === null) {
+      if (date === null || startTime === null || endTime === null || reps === null || intensity === null) {
         console.error('Error: One or more values are null')
         showDialog()
         return
       }
       
-      await addItemToLocal(wType, date, startTime, endTime, distance, intensity, notes, restTimes);
+      await addItemToLocal(wType, date, startTime, endTime, reps, intensity, notes, restTimes);
     
       setDateFromChild(null)
       setStartTimeFromChild(null)
       setEndTimeFromChild(null)
-      setNumFromChild(null)
+      setRepsFromChild(null)
       setIntensity(null)
       setNotes(null)
       setAllRestTimes([])
@@ -67,7 +67,7 @@ export default function AddBiking() {
       navigation.goBack()
     }
 
-    const addItemToLocal = async (wType, date, startTime, endTime, distance, intensity, notes, restTimes) => {
+    const addItemToLocal = async (wType, date, startTime, endTime, reps, intensity, notes, restTimes) => {
 
       //yhdistää daten startTimeen ja EndTimeen, ei enää tallenna sisäisesti datea erikseen
       const dateOnlyObj = new Date(date);
@@ -94,7 +94,7 @@ export default function AddBiking() {
         const parsedItems = existingItems ? JSON.parse(existingItems) : [];
     
         
-        parsedItems.push({wType, combinedStart, combinedEnd, distance, intensity, notes, restTimes });
+        parsedItems.push({wType, combinedStart, combinedEnd, reps, intensity, notes, restTimes });
     
         
         await AsyncStorage.setItem('savedWorkouts', JSON.stringify(parsedItems));
@@ -105,24 +105,21 @@ export default function AddBiking() {
         console.error('Error adding item to local storage:', error);
       }
     }
-
     const showDialog = () => setVisible(true)
     const hideDialog = () => setVisible(false)
 
     return (
       <PaperProvider>
-        <View style={{ flexDirection: 'row' }}>
+          <View style={{ flexDirection: 'row' }}>
             <SelectDate onDateChange={handleDateChange}/>
             <SelectTime label="Start Time" onTimeChange={handleStartTimeChange}/>
             <SelectTime label="End Time" onTimeChange={handleEndTimeChange}/>
           </View>
           <RestTime onChange={handleRestTimesChange}/>
-          <View>
-      </View>
-          <NumericTextInput label='Distance (km)' onNumChange={handleNumChange} minVal={0} maxVal={200}/>
+          <NumericTextInput label='Reps' onNumChange={handleNumChange} minVal={0} maxVal={999}/>
           <TextInput placeholder='Notes' multiline={true} onChangeText={handleNotesChange}/>
           <NumberSelector onSelect={handleNumberSelect} />
-          <Button onPress={() => saveDataAndReset(wType, dateFromChild, startTimeFromChild, endTimeFromChild, numFromChild, intensity, notes, allRestTimes)} mode='contained'>Add Workout</Button>
+          <Button onPress={() => saveDataAndReset(wType, dateFromChild, startTimeFromChild, endTimeFromChild, repsFromChild, intensity, notes, allRestTimes)} mode='contained'>Add Workout</Button>
           <Portal>
             <Dialog visible={visible} onDismiss={hideDialog}>
               <Dialog.Title>Alert</Dialog.Title>

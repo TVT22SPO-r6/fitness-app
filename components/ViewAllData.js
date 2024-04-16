@@ -25,11 +25,14 @@ const ViewAllData = () => {
     <View>
       {data.map((item, index) => (
         <View key={index}>
+          <Text> </Text>
+          <Text style={{fontWeight:'bold'}}>Index: {index} </Text>
           <Text>wType: {item.wType}</Text>
-          <Text>Date: {item.date}</Text>
-          <Text>Start Time: {item.startTime}</Text>
-          <Text>End Time: {item.endTime}</Text>
+          <Text>Start Time: {item.combinedStart}</Text>
+          <Text>End Time: {item.combinedEnd}</Text>
           <Text>Distance: {item.distance}</Text>
+          <Text>Weight: {item.weight}</Text>
+          <Text>Reps: {item.reps}</Text>
           <Text>Intensity: {item.intensity}</Text>
           <Text>Notes: {item.notes}</Text>
             {item.restTimes && item.restTimes.length > 0 ? (
