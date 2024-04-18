@@ -52,7 +52,7 @@ export default function App() {
                         name="Past Workout"
                         component={PastWorkoutScreen}
                         options={{title: "Past Workout", headerTitle: "Past Workout"}}
-                        initialParams={{workoutId: null}}
+                        initialParams={{workout: null}}
                     />
                     <Stack.Screen
                         name="Clock"
