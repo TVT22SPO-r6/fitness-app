@@ -1,27 +1,50 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, Button } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Event = ({ event }) => {
-    const eventTime = new Date(event.eventDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-  
+    const eventTime = new Date(event.combinedStart).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    const navigation = useNavigation();
+
     return (
       <View style={[styles.event, { top: event.top, height: event.height }]}>
-        <Text style={{ color: 'white' }}>{eventTime}  {event.description}</Text>
+        <Text style={{ color: 'white' }} onPress={() => navigation.navigate("Past Workout", {workout: event})} >{eventTime}  {event.wType}</Text>
       </View>
     );
   };
   
   
 const Day = ({ selectedDate, events }) => {
-  
-  const selectedDateEvents = events.filter(event => {
-    const eventDate = new Date(event.eventDate);
+    const [ data, setData ] = useState([])
+
+    const fetchData = async () => {
+        try {
+            const jsonValue = await AsyncStorage.getItem('savedWorkouts');
+            if (jsonValue !== null) {
+                const parsedData = JSON.parse(jsonValue);
+                console.log("ParsedData", parsedData)
+                setData(parsedData);
+            }else{
+                console.log("Nothing found")
+            }
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+  const selectedDateEvents = data.filter(event => {
+    const eventDate = new Date(event.combinedStart);
     const eventDateString = eventDate.toISOString().split('T')[0];
     return eventDateString === selectedDate;
   });
 
 
-  const sortedEvents = selectedDateEvents.sort((a, b) => new Date(a.eventDate) - new Date(b.eventDate));
+  const sortedEvents = selectedDateEvents.sort((a, b) => new Date(a.combinedStart) - new Date(b.combinedStart));
 
 
   const groupEventsByTime = (events) => {
@@ -30,7 +53,7 @@ const Day = ({ selectedDate, events }) => {
     let currentEndTime = null;
   
     events.forEach((event) => {
-      const eventTime = new Date(event.eventDate);
+      const eventTime = new Date(event.combinedStart);
       
       if (!currentEndTime || eventTime <= currentEndTime) {
    
@@ -52,7 +75,6 @@ const Day = ({ selectedDate, events }) => {
   };
 
   const renderEvents = () => {
-    
     const groupedEvents = groupEventsByTime(sortedEvents);
 
    
