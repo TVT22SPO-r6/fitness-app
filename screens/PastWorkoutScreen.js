@@ -1,12 +1,28 @@
 import { useEffect, useState } from "react";
 import { Text, View, StyleSheet } from "react-native";
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function PastWorkoutScreen({route}){
     const { workout } = route.params
     const [ data, setData ] = useState(workout)
-    const [ duration, setDuration ] = useState((new Date(data.combinedEnd) - new Date(data.combinedStart)) / 1000 / 60)
+    const [ duration, setDuration ] = useState(calculateDuration())
+    const [ restTimes, setRestTimes ] = useState(calculateRestTimes())
 
+    function calculateDuration(){
+        if(data.restTimes.length === 0){
+            return (new Date(data.combinedEnd) - new Date(data.combinedStart)) / 1000 / 60
+        }else{
+            return ((new Date(data.combinedEnd) - new Date(data.combinedStart)) / 1000 / 60) - calculateRestTimes()
+        }
+    }
+
+    function calculateRestTimes(){
+        var combinedRests = 0
+        data.restTimes.forEach(element => {
+            combinedRests += (new Date(element.endTime) - new Date(element.startTime)) / 1000 / 60
+        });
+        return combinedRests
+    }
+    
     function calculateCalories(){
         const caloriesPerHour = {
             running1: 574,
@@ -62,7 +78,7 @@ export default function PastWorkoutScreen({route}){
                 <View style={styles.titleBox}>
                     <Text style={styles.titleFont} >{data.wType}</Text>
                     <Text>{data.combinedStart.split("T")[0]}</Text>
-                    <Text>{data.combinedStart.split("T")[1].slice(0,5)}</Text>
+                    <Text>{new Date(data.combinedStart).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text>
                 </View>
                 <View style={styles.infoBox}>
                     <View style={styles.infoTextContainer}>
@@ -73,6 +89,12 @@ export default function PastWorkoutScreen({route}){
                         <Text style={[styles.infoText, {fontWeight: "bold"}]}>Distance:</Text>
                         <Text style={styles.infoText}>{data.distance} km</Text>
                     </View>
+                    { data.restTimes.length === 0 ? <></> :
+                    <View style={styles.infoTextContainer}>
+                        <Text style={[styles.infoText, {fontWeight: "bold"}]}>Rest:</Text>
+                        <Text style={styles.infoText}>{restTimes} min</Text>
+                    </View>
+                    }
                     <View style={styles.infoTextContainer}>
                         <Text style={[styles.infoText, {fontWeight: "bold"}]}>Calories Burned:</Text>
                         <Text style={styles.infoText}>{calculateCalories()} kcal</Text>
@@ -90,7 +112,7 @@ export default function PastWorkoutScreen({route}){
                 <View style={styles.titleBox}>
                     <Text style={styles.titleFont} >{data.wType}</Text>
                     <Text>{data.combinedStart.split("T")[0]}</Text>
-                    <Text>{data.combinedStart.split("T")[1].slice(0,5)}</Text>
+                    <Text>{new Date(data.combinedStart).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text>
                 </View>
                 <View style={styles.infoBox}>
                     <View style={styles.infoTextContainer}>
@@ -105,6 +127,12 @@ export default function PastWorkoutScreen({route}){
                         <Text style={[styles.infoText, {fontWeight: "bold"}]}>Reps:</Text>
                         <Text style={styles.infoText}>{data.reps}</Text>
                     </View>
+                    { data.restTimes.length === 0 ? <></> :
+                    <View style={styles.infoTextContainer}>
+                        <Text style={[styles.infoText, {fontWeight: "bold"}]}>Rest:</Text>
+                        <Text style={styles.infoText}>{restTimes} min</Text>
+                    </View>
+                    }
                     <View style={styles.infoTextContainer}>
                         <Text style={[styles.infoText, {fontWeight: "bold"}]}>Calories Burned:</Text>
                         <Text style={styles.infoText}>{calculateCalories()} kcal</Text>
@@ -122,7 +150,7 @@ export default function PastWorkoutScreen({route}){
                 <View style={styles.titleBox}>
                     <Text style={styles.titleFont} >{data.wType}</Text>
                     <Text>{data.combinedStart.split("T")[0]}</Text>
-                    <Text>{data.combinedStart.split("T")[1].slice(0,5)}</Text>
+                    <Text>{new Date(data.combinedStart).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text>
                 </View>
                 <View style={styles.infoBox}>
                     <View style={styles.infoTextContainer}>
@@ -133,6 +161,12 @@ export default function PastWorkoutScreen({route}){
                         <Text style={[styles.infoText, {fontWeight: "bold"}]}>Reps:</Text>
                         <Text style={styles.infoText}>{data.reps}</Text>
                     </View>
+                    { data.restTimes.length === 0 ? <></> :
+                    <View style={styles.infoTextContainer}>
+                        <Text style={[styles.infoText, {fontWeight: "bold"}]}>Rest:</Text>
+                        <Text style={styles.infoText}>{restTimes} min</Text>
+                    </View>
+                    }
                     <View style={styles.infoTextContainer}>
                         <Text style={[styles.infoText, {fontWeight: "bold"}]}>Calories Burned:</Text>
                         <Text style={styles.infoText}>{calculateCalories()} kcal</Text>
