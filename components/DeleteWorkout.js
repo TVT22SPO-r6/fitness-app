@@ -8,9 +8,8 @@ export default function DeleteWorkout(workout){
                 var parsedData = JSON.parse(workouts)
                 parsedData.forEach(element => {
                     if(JSON.stringify(element) === JSON.stringify(workout)){
-                        console.log("data before: ", parsedData)
                         parsedData.splice(parsedData.indexOf(element), 1);
-                        console.log("data after: ", parsedData)
+
                     }
                 });
 

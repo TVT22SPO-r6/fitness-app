@@ -27,7 +27,6 @@ export default function PastWorkoutScreen({route, navigation}){
     const handleDelete = (workout) => {
         DeleteWorkout(workout)
         navigation.goBack()
-        //navigation.navigate("Calendar")
     }
     
     function calculateCalories(){

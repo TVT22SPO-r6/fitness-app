@@ -18,13 +18,11 @@ const CalendarScreen = () => {
         loadEvents();
     }
   }, [isFocused]);
-  
+
   const loadEvents = async () => {
     try {
       const storedEvents = await AsyncStorage.getItem('@events');
       const storedWorkouts = await AsyncStorage.getItem('savedWorkouts');
-      console.log("storedEvents: ", storedEvents)
-      console.log("storedWorkouts: ", storedWorkouts)
       const combinedEvents = makeEvents(
         storedEvents ? JSON.parse(storedEvents) : {},
         storedWorkouts ? JSON.parse(storedWorkouts) : []
@@ -43,8 +41,10 @@ const CalendarScreen = () => {
         workoutData.forEach(workout => {
             const date = workout.combinedStart.split("T")[0]
             if(date in combinedEvents){
+
                 combinedEvents[date] = [...combinedEvents, workout]
             }else{
+
                 combinedEvents[date] = [workout]
             }
         })
@@ -57,7 +57,7 @@ const CalendarScreen = () => {
                 if(JSON.stringify(combinedEvents) === "{}"){
                     combinedEvents[date] = [event]
                 }else{
-                    combinedEvents[date] = [...combinedEvents[date], event]
+                    combinedEvents[date] ? combinedEvents[date] = [...combinedEvents[date], event] : combinedEvents[date] = [event]
                 }
             })
         })
