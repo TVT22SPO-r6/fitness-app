@@ -44,7 +44,7 @@ const AddEventButton = ({ onAddEvent }) => {
               display="default"
               onChange={(event, selectedDate) => {
                 setShowDatePicker(false);
-                setDate(selectedDate || date); // Prevent null values if cancelled
+                setDate(selectedDate || date); 
               }}
             />
           )}
@@ -57,7 +57,7 @@ const AddEventButton = ({ onAddEvent }) => {
               display="default"
               onChange={(event, selectedTime) => {
                 setShowTimePicker(false);
-                setTime(selectedTime || time); // Prevent null values if cancelled
+                setTime(selectedTime || time); 
               }}
             />
           )}
