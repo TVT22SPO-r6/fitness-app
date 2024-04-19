@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Text, View, Button, StyleSheet } from "react-native";
 import { useWorkout } from '../components/WorkoutContext';
+import { useRoute } from '@react-navigation/native';
 
 function formatDate(dateString) {
     const date = new Date(dateString);
@@ -13,35 +14,67 @@ function formatTime(timeString) {
 }
 
 function CurrentWorkoutScreen() {
+    const route = useRoute();
     const { currentWorkout } = useWorkout();
     const [timer, setTimer] = useState(0);
     const [intervalId, setIntervalId] = useState(null);
     const [timerActive, setTimerActive] = useState(false);
+    const workout = route.params?.workout || currentWorkout;
 
     useEffect(() => {
-        if (currentWorkout && currentWorkout.startTime && currentWorkout.endTime) {
-            const startTime = new Date(currentWorkout.startTime).getTime();
-            const endTime = new Date(currentWorkout.endTime).getTime();
-            setTimer(endTime - startTime);
+        const navWorkout = route.params?.workout;
+        console.log("Workout on screen received from navigation:", navWorkout);
+        if (navWorkout) {
+            console.log("Using workout from navigation");
+            updateCurrentWorkout(navWorkout);
         }
-    }, [currentWorkout]);
+    }, [route.params?.workout]);
+
+    useEffect(() => {
+        if (workout && workout.combinedStart && workout.combinedEnd) {
+            const duration = new Date(workout.combinedEnd).getTime() - new Date(workout.combinedStart).getTime();
+            setTimer(duration);
+        }
+    }, [workout]);
+
+
+    function formatDate(dateString) {
+        if (!dateString) return 'Date not available';  // Handle undefined or null dateString
+    
+        const date = new Date(dateString);
+        if (isNaN(date.getTime())) return 'Invalid date';  // Check if the date is invalid
+        console.log("Received workout date:", workout.date);
+    
+        return `${date.getDate().toString().padStart(2, '0')}.${(date.getMonth() + 1).toString().padStart(2, '0')}.${date.getFullYear()}`;
+    }
+
+    function formatTime(timeString) {
+        if (!timeString) return 'Time not available';  // Handle undefined or null timeString
+    
+        const time = new Date(timeString);
+        if (isNaN(time.getTime())) return 'Invalid time';  // Check if the time is invalid
+    
+        return `${time.getHours().toString().padStart(2, '0')}:${time.getMinutes().toString().padStart(2, '0')}`;
+    }
 
     const startTimer = () => {
         if (!timerActive && timer > 0) {
             const id = setInterval(() => {
                 setTimer((prevTimer) => {
-                    if (prevTimer <= 1000) {
+                    const newTime = prevTimer - 1000;
+                    if (newTime <= 0) {
                         clearInterval(id);
                         setTimerActive(false);
                         return 0;
                     }
-                    return prevTimer - 1000;
+                    return newTime;
                 });
             }, 1000);
             setIntervalId(id);
             setTimerActive(true);
         }
     };
+
 
     const stopTimer = () => {
         if (intervalId) {
@@ -52,11 +85,10 @@ function CurrentWorkoutScreen() {
     };
 
     const resetTimer = () => {
-        stopTimer();  // Ensure timer is stopped before resetting
-        if (currentWorkout && currentWorkout.startTime && currentWorkout.endTime) {
-            const startTime = new Date(currentWorkout.startTime).getTime();
-            const endTime = new Date(currentWorkout.endTime).getTime();
-            setTimer(endTime - startTime);
+        stopTimer();
+        if (workout && workout.combinedStart && workout.combinedEnd) {
+            const duration = new Date(workout.combinedEnd).getTime() - new Date(workout.combinedStart).getTime();
+            setTimer(duration);
         }
     };
 
@@ -72,12 +104,12 @@ function CurrentWorkoutScreen() {
     return (
         <View style={styles.container}>
             <Text style={styles.header}>Current Workout</Text>
-            <Text>Type: {currentWorkout.type}</Text>
-            <Text>Date: {formatDate(currentWorkout.date)}</Text>
-            <Text>Start Time: {formatTime(currentWorkout.startTime)}</Text>
-            <Text>End Time: {formatTime(currentWorkout.endTime)}</Text>
-            <Text>Distance: {currentWorkout.num} km</Text>
-            <Text>Notes: {currentWorkout.notes}</Text>
+            <Text>Type: {workout.wType}</Text>
+            <Text>Date: {formatDate(workout.combinedStart)}</Text>
+            <Text>Start Time: {formatTime(workout.combinedStart)}</Text>
+            <Text>End Time: {formatTime(workout.combinedEnd)}</Text>
+            <Text>Distance: {workout.distance} km</Text>
+            <Text>Notes: {workout.notes}</Text>
             <Text>Timer: {`${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`}</Text>
             <Button onPress={startTimer} title="Start Timer" />
             <Button onPress={stopTimer} title="Stop Timer" />
