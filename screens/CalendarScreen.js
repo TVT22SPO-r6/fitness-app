@@ -29,15 +29,30 @@ const CalendarScreen = () => {
             setEvents(combinedEvents);
             updateCalendarMarks(combinedEvents);
         } else {
+            console.log('No events or workouts stored');
         }
     } catch (error) {
         console.error('Error loading events:', error);
     }
 };
 
-  const handleStartWorkout = (workout) => {
-    updateCurrentWorkout(workout);
-    navigation.navigate('Current Workout');
+const handleStartWorkout = async (workout) => {
+  updateCurrentWorkout(workout);
+  navigation.navigate('Current Workout');
+
+  // Remove the started workout from AsyncStorage and update the state
+  try {
+      const storedWorkouts = await AsyncStorage.getItem('savedWorkouts');
+      if (storedWorkouts) {
+          const workouts = JSON.parse(storedWorkouts);
+          const updatedWorkouts = workouts.filter(w => w.combinedStart !== workout.combinedStart); // Assuming combinedStart can uniquely identify a workout
+          await AsyncStorage.setItem('savedWorkouts', JSON.stringify(updatedWorkouts));
+          // Refresh the events shown on the calendar
+          loadEvents(); 
+      }
+  } catch (error) {
+      console.error('Error updating workouts:', error);
+  }
 };
 
 const makeEvents = (eventData, workoutData) => {
@@ -69,11 +84,13 @@ const makeEvents = (eventData, workoutData) => {
   const updateCalendarMarks = (events) => {
     const newMarkedDates = {};
     Object.keys(events).forEach(date => {
-      newMarkedDates[date] = { marked: true };
+        if (events[date].length > 0) {
+            newMarkedDates[date] = { marked: true, dotColor: 'blue' };
+        }
     });
     setMarkedDates(newMarkedDates);
-  };
-  
+};
+
   return (
     <View style={styles.container}>
       <Calendar

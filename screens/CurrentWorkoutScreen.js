@@ -108,7 +108,10 @@ function CurrentWorkoutScreen() {
             <Text>Date: {formatDate(workout.combinedStart)}</Text>
             <Text>Start Time: {formatTime(workout.combinedStart)}</Text>
             <Text>End Time: {formatTime(workout.combinedEnd)}</Text>
-            <Text>Distance: {workout.distance} km</Text>
+            {['pushups', 'weights'].includes(workout.wType) && <Text>Reps: {workout.reps}</Text>}
+            {['biking', 'running'].includes(workout.wType) && <Text>Distance: {workout.distance} km</Text>}
+            {workout.wType === 'weights' && <Text>Weight: {workout.weight} kg</Text>}
+            <Text>Intensity of Workout: {workout.intensity} </Text>
             <Text>Notes: {workout.notes}</Text>
             <Text>Timer: {`${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`}</Text>
             <Button onPress={startTimer} title="Start Timer" />
