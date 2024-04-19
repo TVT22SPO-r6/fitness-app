@@ -1,18 +1,45 @@
-// CalendarScreen.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Calendar } from 'react-native-calendars';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import AddEventButton from '../components/AddEventButton';
 import Day from '../components/Day';
 
 const CalendarScreen = () => {
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
-  const [events, setEvents] = useState([]);
+  const [events, setEvents] = useState({});
+  const [markedDates, setMarkedDates] = useState({});
 
-  const handleAddEvent = (description, eventDateTime) => {
-    const newEvent = { description, eventDate: eventDateTime };
-    setEvents([...events, newEvent]);
-    console.log('New event:', description, eventDateTime);
+  useEffect(() => {
+    loadEvents();
+  }, []);
+
+  const loadEvents = async () => {
+    try {
+      const storedEvents = await AsyncStorage.getItem('@events');
+      if (storedEvents) {
+        const loadedEvents = JSON.parse(storedEvents);
+        setEvents(loadedEvents);
+        updateCalendarMarks(loadedEvents);
+      }
+    } catch (error) {
+      console.error('Error loading events:', error);
+    }
+  };
+
+  const handleAddEvent = async (description, eventDateTime) => {
+    const newEvents = { ...events, [eventDateTime.split(' ')[0]]: [...(events[eventDateTime.split(' ')[0]] || []), { description, eventDateTime }] };
+    setEvents(newEvents);
+    await AsyncStorage.setItem('@events', JSON.stringify(newEvents));
+    updateCalendarMarks(newEvents);
+  };
+
+  const updateCalendarMarks = (events) => {
+    const newMarkedDates = {};
+    Object.keys(events).forEach(date => {
+      newMarkedDates[date] = { marked: true };
+    });
+    setMarkedDates(newMarkedDates);
   };
 
   return (
@@ -23,11 +50,10 @@ const CalendarScreen = () => {
         monthFormat={'MMMM yyyy'}
         firstDay={1}
         enableSwipeMonths={true}
-        hideExtraDays={false}
-        hideDayNames={false}
+        markedDates={{...markedDates, [selectedDate]: { ...markedDates[selectedDate], selected: true }}}
       />
       <AddEventButton onAddEvent={handleAddEvent} />
-      <Day selectedDate={selectedDate} events={events} />
+      <Day selectedDate={selectedDate} events={events[selectedDate] || []} />
     </View>
   );
 };
@@ -41,3 +67,4 @@ const styles = StyleSheet.create({
 });
 
 export default CalendarScreen;
+
