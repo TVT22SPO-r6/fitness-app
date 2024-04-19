@@ -4,25 +4,16 @@ import { useNavigation } from '@react-navigation/native';
 
 const Day = ({ selectedDate, events, onStartWorkout }) => {
     const navigation = useNavigation();
-
-    const renderEvents = () => events.map((event, index) => (
-        <View key={index} style={styles.event}>
-            <Text style={styles.eventText} onPress={() => {
-                event.combinedStart !== undefined ? navigation.navigate("Past Workout", {workout: event}) : {}
-            }}>
-                Time: {event.eventDateTime !== undefined ? new Date(event.eventDateTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-                    :
-                    new Date(event.combinedStart).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                {'\n'}Description: {event.description}
-            </Text>
-            {event.wType && (
-                <Button
-                    title="Start Workout"
-                    onPress={() => onStartWorkout(event)}
-                />
-            )}
-        </View>
-    ));
+  const renderEvents = () => events.map((event, index) => (
+    <View key={index} style={styles.event}>
+      <Text style={styles.eventText} onPress={() => {event.combinedStart !== undefined ? navigation.navigate("Past Workout", {workout: event}) : {}}}>
+        Time: {event.eventDateTime !== undefined ? new Date(event.eventDateTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+            :
+                new Date(event.combinedStart).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+        {'\n'}Description: {event.description}
+      </Text>
+    </View>
+  ));
 
     return (
         <View style={styles.container}>

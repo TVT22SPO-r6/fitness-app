@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { Text, View, StyleSheet } from "react-native";
+import { Text, View, StyleSheet, Button } from "react-native";
+import DeleteWorkout from "../components/DeleteWorkout";
 
-export default function PastWorkoutScreen({route}){
+export default function PastWorkoutScreen({route, navigation}){
     const { workout } = route.params
     const [ data, setData ] = useState(workout)
     const [ duration, setDuration ] = useState(calculateDuration())
@@ -21,6 +22,11 @@ export default function PastWorkoutScreen({route}){
             combinedRests += (new Date(element.endTime) - new Date(element.startTime)) / 1000 / 60
         });
         return combinedRests
+    }
+
+    const handleDelete = (workout) => {
+        DeleteWorkout(workout)
+        navigation.goBack()
     }
     
     function calculateCalories(){
@@ -103,6 +109,9 @@ export default function PastWorkoutScreen({route}){
                         <Text style={[styles.infoText, {fontWeight: "bold"}]}>Notes:</Text>
                         <Text style={styles.infoText}>{data.notes}</Text>
                     </View>
+                </View>
+                <View style={{paddingBottom: 15}}>
+                    <Button title="Delete workout" color="red" onPress={() => handleDelete(data)} />
                 </View>
             </View>
         );
