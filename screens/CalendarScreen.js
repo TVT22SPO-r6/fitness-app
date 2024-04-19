@@ -17,15 +17,35 @@ const CalendarScreen = () => {
   const loadEvents = async () => {
     try {
       const storedEvents = await AsyncStorage.getItem('@events');
-      if (storedEvents) {
-        const loadedEvents = JSON.parse(storedEvents);
-        setEvents(loadedEvents);
-        updateCalendarMarks(loadedEvents);
-      }
+      const storedWorkouts = await AsyncStorage.getItem('savedWorkouts');
+      const combinedEvents = makeEvents(JSON.parse(storedEvents), JSON.parse(storedWorkouts))
+      setEvents(combinedEvents)
+      updateCalendarMarks(combinedEvents)
     } catch (error) {
       console.error('Error loading events:', error);
     }
   };
+
+  const makeEvents = (eventData, workoutData) => {
+    var combinedEvents = {}
+    
+    workoutData.forEach(workout => {
+        const date = workout.combinedStart.split("T")[0]
+        if(date in combinedEvents){
+            combinedEvents[date] = [...combinedEvents, workout]
+        }else{
+            combinedEvents[date] = [workout]
+        }
+    })
+
+    Object.keys(eventData).forEach(date => {
+        eventData[date].forEach(event => {
+            combinedEvents[date] = [...combinedEvents[date], event]
+        })
+    })
+
+    return combinedEvents
+  }
 
   const handleAddEvent = async (description, eventDateTime) => {
     const newEvents = { ...events, [eventDateTime.split(' ')[0]]: [...(events[eventDateTime.split(' ')[0]] || []), { description, eventDateTime }] };
@@ -41,7 +61,7 @@ const CalendarScreen = () => {
     });
     setMarkedDates(newMarkedDates);
   };
-
+  
   return (
     <View style={styles.container}>
       <Calendar
