@@ -1,10 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import React, { useState, useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Calendar } from 'react-native-calendars';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import AddEventButton from '../components/AddEventButton';
-import Day from '../components/Day';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AddEventButton from '../components/AddEventButton';
 import Day from '../components/Day';
@@ -25,11 +21,6 @@ const CalendarScreen = () => {
       const combinedEvents = makeEvents(JSON.parse(storedEvents), JSON.parse(storedWorkouts))
       setEvents(combinedEvents)
       updateCalendarMarks(combinedEvents)
-      /*if (storedEvents) {
-        const loadedEvents = JSON.parse(storedEvents);
-        setEvents(loadedEvents);
-        updateCalendarMarks(loadedEvents);
-      }*/
     } catch (error) {
       console.error('Error loading events:', error);
     }
