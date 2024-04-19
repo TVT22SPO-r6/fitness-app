@@ -10,7 +10,7 @@ const Day = ({ selectedDate, events }) => {
         Time: {event.eventDateTime !== undefined ? new Date(event.eventDateTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
             :
                 new Date(event.combinedStart).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-        {'\n'}Description: {event.description}
+        {'\n'}Description: {event.description !== undefined ? event.description : event.wType}
       </Text>
     </View>
   ));
