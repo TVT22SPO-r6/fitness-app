@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Modal, TextInput, Button } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import DateTimePicker from '@react-native-community/datetimepicker'
+import React, { useState } from 'react';
+import { View, Button, TextInput, Modal, StyleSheet, Platform } from 'react-native';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 const AddEventButton = ({ onAddEvent }) => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -10,48 +9,26 @@ const AddEventButton = ({ onAddEvent }) => {
   const [time, setTime] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
-  const [events, setEvents] = useState([]);
-
-  useEffect(() => {
-    loadEvents();
-  }, []);
-
-  const loadEvents = async () => {
-    try {
-      const storedEvents = await AsyncStorage.getItem('@events');
-      if (storedEvents !== null) {
-        const parsedEvents = JSON.parse(storedEvents);
-        setEvents(parsedEvents);
-      }
-    } catch (error) {
-      console.error('Error loading events:', error);
-    }
-  };
-
-  const saveEvents = async (events) => {
-    try {
-      await AsyncStorage.setItem('@events', JSON.stringify(events));
-    } catch (error) {
-      console.error('Error saving events:', error);
-    }
-  };
 
   const handleAddEvent = () => {
-    const eventDate = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
-    const eventTime = `${time.getHours()}:${time.getMinutes()}`;
-    const eventDateTime = `${eventDate} ${eventTime}`;
-    const newEvent = { description, eventDateTime };
-    const updatedEvents = [...events, newEvent];
-    setEvents(updatedEvents);
-    saveEvents(updatedEvents);
+    const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
+    const formattedTime = `${time.getHours().toString().padStart(2, '0')}:${time.getMinutes().toString().padStart(2, '0')}`;
+    const eventDateTime = `${formattedDate} ${formattedTime}`;
     onAddEvent(description, eventDateTime);
     setModalVisible(false);
+    setDescription('');
+    setDate(new Date());
+    setTime(new Date());
   };
 
   return (
     <View style={styles.container}>
       <Button title="Add Event" onPress={() => setModalVisible(true)} />
-      <Modal visible={modalVisible} animationType="slide">
+      <Modal
+        visible={modalVisible}
+        animationType="slide"
+        onRequestClose={() => setModalVisible(false)}
+      >
         <View style={styles.modalContainer}>
           <TextInput
             style={styles.input}
@@ -67,9 +44,7 @@ const AddEventButton = ({ onAddEvent }) => {
               display="default"
               onChange={(event, selectedDate) => {
                 setShowDatePicker(false);
-                if (selectedDate) {
-                  setDate(selectedDate);
-                }
+                setDate(selectedDate || date); // Prevent null values if cancelled
               }}
             />
           )}
@@ -82,9 +57,7 @@ const AddEventButton = ({ onAddEvent }) => {
               display="default"
               onChange={(event, selectedTime) => {
                 setShowTimePicker(false);
-                if (selectedTime) {
-                  setTime(selectedTime);
-                }
+                setTime(selectedTime || time); // Prevent null values if cancelled
               }}
             />
           )}
@@ -118,3 +91,4 @@ const styles = StyleSheet.create({
 });
 
 export default AddEventButton;
+
