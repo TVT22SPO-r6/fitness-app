@@ -1,19 +1,29 @@
 import React from 'react';
 import { View, Text, StyleSheet, Button } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useWorkout } from '../components/WorkoutContext'; // Adjust path if necessary
 
-const Day = ({ selectedDate, events, onStartWorkout }) => {
+const Day = ({ selectedDate, events }) => {
     const navigation = useNavigation();
-  const renderEvents = () => events.map((event, index) => (
-    <View key={index} style={styles.event}>
-      <Text style={styles.eventText} onPress={() => {event.combinedStart !== undefined ? navigation.navigate("Past Workout", {workout: event}) : {}}}>
-        Time: {event.eventDateTime !== undefined ? new Date(event.eventDateTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-            :
-                new Date(event.combinedStart).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-        {'\n'}Description: {event.description}
-      </Text>
-    </View>
-  ));
+    const { updateCurrentWorkout } = useWorkout();
+
+    const handleStartWorkout = (event) => {
+        updateCurrentWorkout(event);
+        navigation.navigate('Current Workout');  // Make sure this screen name matches your route configuration
+    };
+
+    const renderEvents = () => events.map((event, index) => (
+        <View key={index} style={styles.event}>
+            <Text style={styles.eventText}>
+                Time: {new Date(event.eventDateTime || event.combinedStart).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                {'\n'}Description: {event.description}
+            </Text>
+            <Button
+                title="Start Workout"
+                onPress={() => handleStartWorkout(event)}
+            />
+        </View>
+    ));
 
     return (
         <View style={styles.container}>
