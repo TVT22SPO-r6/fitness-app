@@ -1,87 +1,87 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, Button, StyleSheet } from "react-native";
+import { View, Text, Button, StyleSheet } from "react-native";
 import { useWorkout } from '../components/WorkoutContext';
-
-function formatDate(dateString) {
-    const date = new Date(dateString);
-    return `${date.getDate().toString().padStart(2, '0')}.${(date.getMonth() + 1).toString().padStart(2, '0')}.${date.getFullYear()}`;
-}
-
-function formatTime(timeString) {
-    const date = new Date(timeString);
-    return `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
-}
+import { useRoute, useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function CurrentWorkoutScreen() {
+    const navigation = useNavigation();
     const { currentWorkout } = useWorkout();
+    const route = useRoute();
     const [timer, setTimer] = useState(0);
     const [intervalId, setIntervalId] = useState(null);
-    const [timerActive, setTimerActive] = useState(false);
+    const workout = route.params?.workout || currentWorkout;
 
-    useEffect(() => {
-        if (currentWorkout && currentWorkout.startTime && currentWorkout.endTime) {
-            const startTime = new Date(currentWorkout.startTime).getTime();
-            const endTime = new Date(currentWorkout.endTime).getTime();
-            setTimer(endTime - startTime);
-        }
-    }, [currentWorkout]);
-
+    // Function to start the timer
     const startTimer = () => {
-        if (!timerActive && timer > 0) {
+        if (!intervalId) {
             const id = setInterval(() => {
-                setTimer((prevTimer) => {
-                    if (prevTimer <= 1000) {
-                        clearInterval(id);
-                        setTimerActive(false);
-                        return 0;
-                    }
-                    return prevTimer - 1000;
-                });
+                setTimer(prevTimer => prevTimer + 1); // Use previous state to increment
             }, 1000);
             setIntervalId(id);
-            setTimerActive(true);
         }
     };
-
+    
     const stopTimer = () => {
-        if (intervalId) {
-            clearInterval(intervalId);
-            setIntervalId(null);
-            setTimerActive(false);
-        }
+        clearInterval(intervalId);
+        setIntervalId(null);
     };
 
     const resetTimer = () => {
-        stopTimer();  // Ensure timer is stopped before resetting
-        if (currentWorkout && currentWorkout.startTime && currentWorkout.endTime) {
-            const startTime = new Date(currentWorkout.startTime).getTime();
-            const endTime = new Date(currentWorkout.endTime).getTime();
-            setTimer(endTime - startTime);
-        }
+        stopTimer();
+        setTimer(0);
     };
 
-    if (!currentWorkout) {
-        return <View style={styles.container}><Text>No current workout data available.</Text></View>;
-    }
+    const endWorkout = async () => {
+        try {
+            resetTimer();
+            const events = await AsyncStorage.getItem('@events');
+            if (events) {
+                let eventsObj = JSON.parse(events);
+                console.log("Retrieved events:", eventsObj); // Debug log
+    
+                // Assuming 'workout.eventDateTime' is the datetime string of the event to be deleted
+                // You might need to adjust this to match the format stored exactly, e.g., '2024-04-20'
+                const eventDateKey = new Date(workout.eventDateTime).toISOString().split('T')[0]; // Converts to '2024-04-20' format
+                if (eventsObj[eventDateKey]) {
+                    eventsObj[eventDateKey] = eventsObj[eventDateKey].filter(e => e.eventDateTime !== workout.eventDateTime);
+    
+                    // If no events are left for the day, optionally delete the key
+                    if (eventsObj[eventDateKey].length === 0) {
+                        delete eventsObj[eventDateKey];
+                    }
+    
+                    await AsyncStorage.setItem('@events', JSON.stringify(eventsObj));
+                } else {
+                    console.log("No events found for date:", eventDateKey);
+                }
+            }
+            navigation.navigate('Calendar');
+        } catch (error) {
+            console.error("Failed to end workout:", error);
+        }
+    };
+    
 
-    const formattedTime = Math.max(0, Math.floor(timer / 1000));
-    const hours = Math.floor(formattedTime / 3600);
-    const minutes = Math.floor((formattedTime % 3600) / 60);
-    const seconds = formattedTime % 60;
+    const formatTime = () => {
+        if (timer < 60) {
+            return `${timer} seconds`;
+        }
+        return `${(timer / 60).toFixed(2)} minutes`;
+    };
 
     return (
         <View style={styles.container}>
             <Text style={styles.header}>Current Workout</Text>
-            <Text>Type: {currentWorkout.type}</Text>
-            <Text>Date: {formatDate(currentWorkout.date)}</Text>
-            <Text>Start Time: {formatTime(currentWorkout.startTime)}</Text>
-            <Text>End Time: {formatTime(currentWorkout.endTime)}</Text>
-            <Text>Distance: {currentWorkout.num} km</Text>
-            <Text>Notes: {currentWorkout.notes}</Text>
-            <Text>Timer: {`${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`}</Text>
-            <Button onPress={startTimer} title="Start Timer" />
-            <Button onPress={stopTimer} title="Stop Timer" />
-            <Button onPress={resetTimer} title="Reset Timer" />
+            <Text>Type: {workout?.wType}</Text>
+            <Text>Date: {new Date(workout?.eventDateTime).toLocaleDateString()}</Text>
+            <Text>Start Time: {new Date(workout?.eventDateTime).toLocaleTimeString()}</Text>
+            <Text>Notes: {workout?.description}</Text>
+            <Text>Timer: {formatTime()}</Text>
+            <Button title="Start Workout" onPress={startTimer} />
+            <Button title="Stop Timer" onPress={stopTimer} />
+            <Button title="Reset Timer" onPress={resetTimer} />
+            <Button title="End Workout" onPress={endWorkout} />
         </View>
     );
 }
@@ -89,7 +89,6 @@ function CurrentWorkoutScreen() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center',
         padding: 20
