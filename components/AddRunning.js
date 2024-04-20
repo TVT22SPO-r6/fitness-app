@@ -5,6 +5,7 @@ import SelectDate from './SelectDate';
 import NumericTextInput from './NumberInput';
 import NumberSelector from './NumberSelector';
 import RestTime from './RestTime';
+import saveData from './SaveData';
 import {useState, Component} from 'react';
 import { View} from 'react-native';
 import { TextInput, PaperProvider, Text, Button, Portal, Dialog} from 'react-native-paper';
@@ -45,44 +46,6 @@ export default function AddRunning() {
     setAllRestTimes(newRestTimes);
     }
 
-    const addItemToLocal = async (wType, date, startTime, endTime, distance, intensity, notes, restTimes) => {
-
-      //yhdistää daten startTimeen ja EndTimeen, ei enää tallenna sisäisesti datea erikseen
-      const dateOnlyObj = new Date(date);
-      const startTimeObj = new Date(startTime);
-      const endTimeObj = new Date(endTime);
-
-      const startHours = startTimeObj.getHours();
-      const startMinutes = startTimeObj.getMinutes();
-      const endHours = endTimeObj.getHours();
-      const endMinutes = endTimeObj.getMinutes();
-
-      const combinedStartTime = new Date(dateOnlyObj);
-      const combinedEndTime = new Date(dateOnlyObj);
-
-      combinedStartTime.setHours(startHours, startMinutes)
-      combinedEndTime.setHours(endHours, endMinutes)
-
-      const combinedStart = combinedStartTime.toISOString();
-      const combinedEnd = combinedEndTime.toISOString();
-
-      try {
-        
-        const existingItems = await AsyncStorage.getItem('savedWorkouts');
-        const parsedItems = existingItems ? JSON.parse(existingItems) : [];
-    
-        
-        parsedItems.push({wType, combinedStart, combinedEnd, distance, intensity, notes, restTimes });
-    
-        
-        await AsyncStorage.setItem('savedWorkouts', JSON.stringify(parsedItems));
-        
-        console.log('Item added to local storage successfully');
-        console.log('Current data saved' + JSON.stringify(parsedItems));
-      } catch (error) {
-        console.error('Error adding item to local storage:', error);
-      }
-    }
 
     const saveDataAndReset = async (wType, date, startTime, endTime, distance, intensity, notes, restTimes) => {
       
@@ -92,7 +55,16 @@ export default function AddRunning() {
         return
       }
       
-      await addItemToLocal(wType, date, startTime, endTime, distance, intensity, notes, restTimes);
+      await saveData({
+        wType: wType,
+        date: date,
+        startTime: startTime,
+        endTime: endTime,
+        distance: distance,
+        intensity: intensity,
+        notes: notes,
+        restTimes: restTimes
+      })
     
       setDateFromChild(null)
       setStartTimeFromChild(null)

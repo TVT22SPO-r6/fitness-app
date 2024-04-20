@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Pressable } from "react-native";
 import { TextInput } from 'react-native-paper';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -6,6 +6,11 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 export default function SelectDate({ onDateChange }) {
     const [date, setDate] = useState(new Date());
     const [show, setShow] = useState(false);
+
+    useEffect(() => {
+        
+        onDateChange(date.toISOString());
+    }, []);
 
     const onChange = (event, selectedDate) => {
         if (selectedDate) {
@@ -21,7 +26,7 @@ export default function SelectDate({ onDateChange }) {
     };
     
 
-    onDateChange(date.toISOString())
+    
     return (
         <>
             <Pressable onPress={showDatepicker}>
@@ -40,7 +45,7 @@ export default function SelectDate({ onDateChange }) {
                     mode="date"
                     display="default"
                     onChange={onChange}
-                    maximumDate={new Date(2030, 11, 31)} // Set to a future date, e.g., December 31, 2030
+                    maximumDate={date}
                 />
             )}
         </>

@@ -5,16 +5,18 @@ import SelectDate from './SelectDate';
 import NumericTextInput from './NumberInput';
 import NumberSelector from './NumberSelector';
 import RestTime from './RestTime';
+import saveData from './SaveData';
 import {useState, Component} from 'react';
 import { View} from 'react-native';
 import { TextInput, PaperProvider, Text, Button, Portal, Dialog} from 'react-native-paper';
+import MuscleSelector from './MuscleSelector';
 
-export default function AddBiking() {
-    const wType  = "biking"
+export default function AddMuscleTraining() {
+    const wType  = "muscles"
     const [dateFromChild, setDateFromChild] = useState(null)
     const [startTimeFromChild, setStartTimeFromChild] = useState(null)
     const [endTimeFromChild, setEndTimeFromChild] = useState(null)
-    const [numFromChild, setNumFromChild] = useState(null)
+    const [muscleSetsFromChild, setMuscleSetsFromChild] = useState([])
     const [intensity, setIntensity] = useState(null)
     const [notes, setNotes] = useState(null)
     const [allRestTimes, setAllRestTimes] = useState([]);
@@ -32,8 +34,8 @@ export default function AddBiking() {
     const handleEndTimeChange = (time) => {
       setEndTimeFromChild(time)
     }
-    const handleNumChange = (num) => {
-      setNumFromChild(num)
+    const handleMuscleSetsChange = (muscleSets) => {
+      setMuscleSetsFromChild(muscleSets)
     }
     const handleNumberSelect = (number) => {
       setIntensity(number)
@@ -44,10 +46,10 @@ export default function AddBiking() {
     const handleRestTimesChange = (newRestTimes) => {
     setAllRestTimes(newRestTimes);
     }
-    
-    const saveDataAndReset = async (wType, date, startTime, endTime, distance, intensity, notes, restTimes) => {
+
+    const saveDataAndReset = async (wType, date, startTime, endTime, muscleSets, intensity, notes, restTimes) => {
       
-      if (date === null || startTime === null || endTime === null || distance === null || intensity === null) {
+      if (date === null || startTime === null || endTime === null || muscleSets === null || intensity === null) {
         console.error('Error: One or more values are null')
         showDialog()
         return
@@ -58,16 +60,16 @@ export default function AddBiking() {
         date: date,
         startTime: startTime,
         endTime: endTime,
-        distance: distance,
+        muscleSets: muscleSets,
         intensity: intensity,
         notes: notes,
         restTimes: restTimes
-    })
+      })
     
       setDateFromChild(null)
       setStartTimeFromChild(null)
       setEndTimeFromChild(null)
-      setNumFromChild(null)
+      setMuscleSetsFromChild([])
       setIntensity(null)
       setNotes(null)
       setAllRestTimes([])
@@ -89,10 +91,12 @@ export default function AddBiking() {
           <RestTime onChange={handleRestTimesChange}/>
           <View>
       </View>
-          <NumericTextInput label='Distance (km)' onNumChange={handleNumChange} minVal={0} maxVal={200}/>
+          <Text> </Text>
+          <Text> </Text>
+          <MuscleSelector onChange={handleMuscleSetsChange}/>
           <TextInput placeholder='Notes' multiline={true} onChangeText={handleNotesChange}/>
           <NumberSelector onSelect={handleNumberSelect} />
-          <Button onPress={() => saveDataAndReset(wType, dateFromChild, startTimeFromChild, endTimeFromChild, numFromChild, intensity, notes, allRestTimes)} mode='contained'>Add Workout</Button>
+          <Button onPress={() => saveDataAndReset(wType, dateFromChild, startTimeFromChild, endTimeFromChild, muscleSetsFromChild, intensity, notes, allRestTimes)} mode='contained'>Add Workout</Button>
           <Portal>
             <Dialog visible={visible} onDismiss={hideDialog}>
               <Dialog.Title>Alert</Dialog.Title>

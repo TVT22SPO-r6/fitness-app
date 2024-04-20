@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Button } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ViewAllData = () => {
@@ -21,6 +21,16 @@ const ViewAllData = () => {
     }
   };
 
+  const deleteData = async () => {
+    try {
+      await AsyncStorage.removeItem('savedWorkouts');
+      setData([]); // Clearing the data state
+      console.log('Data deleted successfully');
+    } catch (error) {
+      console.error('Error deleting data:', error);
+    }
+  };
+
   return (
     <View>
       {data.map((item, index) => (
@@ -33,6 +43,19 @@ const ViewAllData = () => {
           <Text>Distance: {item.distance}</Text>
           <Text>Weight: {item.weight}</Text>
           <Text>Reps: {item.reps}</Text>
+          {item.muscleSets && item.muscleSets.length > 0 ? (
+            item.muscleSets.map((muscleSet, index) => (
+              <View key={index}>
+                <Text>Muscle set {index}:</Text>
+                <Text>Muscle Type: {muscleSet.muscleType}</Text>
+                <Text>Weight: {muscleSet.weight}</Text>
+                <Text>Reps: {muscleSet.reps}</Text>
+                <Text>Sets: {muscleSet.sets}</Text>
+              </View>
+            ))
+            ) : (
+              <Text>No Muscle types</Text>
+            )}
           <Text>Intensity: {item.intensity}</Text>
           <Text>Notes: {item.notes}</Text>
             {item.restTimes && item.restTimes.length > 0 ? (
@@ -48,6 +71,7 @@ const ViewAllData = () => {
             )}
         </View>
       ))}
+      <Button title="Delete All Data" onPress={deleteData} />
     </View>
   );
 };

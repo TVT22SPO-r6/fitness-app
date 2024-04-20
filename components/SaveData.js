@@ -1,11 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default function SaveData(props) {
-    
-
-    const addItemToLocal = async (props) => {
-
-      //yhdistää daten startTimeen ja EndTimeen
+const saveData = async(props) => {
+       
       const dateOnlyObj = new Date(props.date);
       const startTimeObj = new Date(props.startTime);
       const endTimeObj = new Date(props.endTime);
@@ -24,13 +20,23 @@ export default function SaveData(props) {
       const combinedStart = combinedStartTime.toISOString();
       const combinedEnd = combinedEndTime.toISOString();
 
+      const wType = props.wType
+      const distance = props.distance
+      const weight = props.weight
+      const reps = props.reps
+      const sets = props.sets
+      const intensity = props.intensity
+      const notes = props.notes
+      const restTimes = props.restTimes 
+      const muscleSets = props.muscleSets
+
       try {
         
         const existingItems = await AsyncStorage.getItem('savedWorkouts');
         const parsedItems = existingItems ? JSON.parse(existingItems) : [];
     
         
-        parsedItems.push({wType, combinedStart, combinedEnd, distance, weight, reps, sets, intensity, notes, restTimes });
+        parsedItems.push({wType, combinedStart, combinedEnd, distance, weight, reps, sets, muscleSets, intensity, notes, restTimes });
     
         
         await AsyncStorage.setItem('savedWorkouts', JSON.stringify(parsedItems));
@@ -40,23 +46,9 @@ export default function SaveData(props) {
       } catch (error) {
         console.error('Error adding item to local storage:', error);
       }
-    }
-
-    const saveDataAndReset = async (props) => {
-      
-      await addItemToLocal(props);
     
-      setDateFromChild(null)
-      setStartTimeFromChild(null)
-      setEndTimeFromChild(null)
-      setNumFromChild(null)
-      setIntensity(null)
-      setNotes(null)
-      setAllRestTimes([])
-    
-      console.log('Values saved and reset successfully');
-    }
 
-    return 
+    return null
   
 }
+export default saveData

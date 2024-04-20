@@ -1,57 +1,53 @@
 import {PaperProvider} from "react-native-paper";
 import React, { useState } from "react";
 import {StyleSheet, ScrollView } from "react-native";
-import DropDown from "react-native-paper-dropdown";
+import { SelectList } from 'react-native-dropdown-select-list'
 import AddWorkout from '../components/AddWorkout';
 
 export default function NewWorkoutScreen(){
-  const [showDropDown, setShowDropDown] = useState(false);
   const [workoutType, setWorkoutType] = useState('');
 
   // Expanded workout type list including handling for additional types.
   const workoutTypeList = [
     {
-      label: "Biking",
-      value: "biking",
+      key: "biking",
+      value: "Biking",
     },
     {
-      label: "Running",
-      value: "running",
+      key: "running",
+      value: "Running",
     },
     {
-      label: "Weights",
-      value: "weights",
+      key: "weights",
+      value: "Weights",
     },
     {
-      label: "Push-Ups",
-      value: "pushups",
+      key: "pushups",
+      value: "Push-Ups",
     },
     {
-      label: "Squats",
-      value: "squats",
+      key: "squats",
+      value: "Squats",
     },
     {
-      label: "Others",
-      value: "others",
+      key: "muscles",
+      value: "Muscle Training",
     },
     {
-      label: "All Saved Data",
-      value: "savedData",
+      key: "savedData",
+      value: "All Saved Data",
     },
   ];
+  
+ 
 
     return (
         <PaperProvider>
           <ScrollView>
-        <DropDown
-            label={"Workout Type"}
-            mode={"outlined"}
-            visible={showDropDown}
-            showDropDown={() => setShowDropDown(true)}
-            onDismiss={() => setShowDropDown(false)}
-            value={workoutType}
-            setValue={setWorkoutType}
-            list={workoutTypeList}
+          <SelectList
+           setSelected={(val) => setWorkoutType(val)} 
+           data={workoutTypeList} 
+           save="key" 
         />
         <AddWorkout wType={workoutType}/>
         </ScrollView>
