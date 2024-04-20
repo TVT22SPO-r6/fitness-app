@@ -6,6 +6,7 @@ import AddWeights from './AddWeights';
 import AddPushups from './AddPushups';
 import AddSquats from './AddSquats';
 import ViewAllData from './ViewAllData';
+import AddMuscleTraining from './AddMuscleTraining';
 import {PaperProvider} from 'react-native-paper';
 
 export default function AddWorkout(props) {
@@ -35,6 +36,11 @@ const typeContentMap = {
   "squats": (
     <>
       <AddSquats/>
+    </>
+  ),
+  "muscles": (
+    <>
+      <AddMuscleTraining/>
     </>
   ),
   "others": (
