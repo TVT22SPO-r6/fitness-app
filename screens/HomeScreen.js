@@ -8,9 +8,6 @@ import AlertNotification from "../components/AlertNotification";
 export default function HomeScreen({navigation}){
     return (
         <SafeAreaView style={styles.container}>
-            <Text style={styles.screenText}>Home Screen</Text>
-            <Button title="New Workout" onPress={() => navigation.navigate("New Workout")}/>
-            <Button title="Calendar" onPress={() => navigation.navigate("Calendar")}/>
             <Feed />
         </SafeAreaView>
     );
