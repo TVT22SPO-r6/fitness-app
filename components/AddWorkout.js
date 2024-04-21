@@ -9,38 +9,37 @@ import ViewAllData from './ViewAllData';
 import AddMuscleTraining from './AddMuscleTraining';
 import {PaperProvider} from 'react-native-paper';
 
-export default function AddWorkout(props) {
-const { wType } = props
+export default function AddWorkout({wType, sType}) {
 
 const typeContentMap = {
   "biking": (
     <>
-     <AddBiking/>
+     <AddBiking sType={sType}/>
     </>
   ),
   "running": (
     <>
-      <AddRunning/>
+      <AddRunning sType={sType}/>
     </>
   ),
   "weights": (
     <>
-      <AddWeights/>
+      <AddWeights sType={sType}/>
     </>
   ),
   "pushups": (
     <>
-      <AddPushups/>
+      <AddPushups sType={sType}/>
     </>
   ),
   "squats": (
     <>
-      <AddSquats/>
+      <AddSquats sType={sType}/>
     </>
   ),
   "muscles": (
     <>
-      <AddMuscleTraining/>
+      <AddMuscleTraining sType={sType}/>
     </>
   ),
   "others": (
