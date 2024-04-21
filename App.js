@@ -3,7 +3,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
-import { PaperProvider } from "react-native-paper";
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { PaperProvider , BottomNavigation} from "react-native-paper";
 import WorkoutPlanScreen from './screens/WorkoutPlanScreen';
 import HomeScreen from './screens/HomeScreen';
 import NewWorkoutScreen from './screens/NewWorkoutScreen';
@@ -11,6 +12,7 @@ import CurrentWorkoutScreen from './screens/CurrentWorkoutScreen';
 import CalendarScreen from './screens/CalendarScreen';
 import PastWorkoutScreen from './screens/PastWorkoutScreen';
 import AlertNotification from './components/AlertNotification';
+import StartNewWorkout from './screens/StartNewWorkout';
 import Clock from './screens/Clock';
 import { TimerProvider } from './screens/TimerContext';
 import { WorkoutProvider } from './components/WorkoutContext';
@@ -58,6 +60,11 @@ export default function App() {
                         name="Clock"
                         component={Clock}
                         options={{ title: "Clock", headerTitle: "Clock" }}
+                    />
+                    <Stack.Screen
+                        name="Start New Workout"
+                        component={StartNewWorkout}
+                        options={{ title: "Start New Workout", headerTitle: "Start New Workout" }}
                     />
                 </Stack.Navigator>
             </NavigationContainer>

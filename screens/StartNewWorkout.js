@@ -4,7 +4,7 @@ import {StyleSheet, ScrollView } from "react-native";
 import { SelectList } from 'react-native-dropdown-select-list'
 import AddWorkout from '../components/AddWorkout';
 
-export default function NewWorkoutScreen(){
+export default function StartNewWorkout(){
   const [workoutType, setWorkoutType] = useState('');
 
   // Expanded workout type list including handling for additional types.
@@ -49,7 +49,7 @@ export default function NewWorkoutScreen(){
            data={workoutTypeList} 
            save="key" 
         />
-        <AddWorkout wType={workoutType} sType="AddNew"/>
+        <AddWorkout wType={workoutType}/>
         </ScrollView>
         </PaperProvider>
     );
