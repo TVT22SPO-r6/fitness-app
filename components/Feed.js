@@ -38,7 +38,16 @@ const Feed = () => {
             <Card.Title
                 title ={item.wType}
                 subtitle={`For ${durationHours} hrs`}
-                right={() => <Text>{startDate.toLocaleDateString()}</Text>}
+                right={() => 
+                <Text>
+                    {`
+                    ${startDate.toLocaleDateString()}\n
+                    ${startDate.toLocaleTimeString([],{
+                    hour: '2-digit',
+                    minute: '2-digit'})}
+                    `}
+                </Text>
+                }
             />
           <Card.Content>
           {item.distance ? (
