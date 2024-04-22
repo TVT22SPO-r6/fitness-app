@@ -79,6 +79,7 @@ const Day = ({ selectedDate, events }) => {
     const navigation = useNavigation();
 
     const handleStartWorkout = (event) => {
+        updateCurrentWorkout(event);
         navigation.navigate('Current Workout');
     };
 
