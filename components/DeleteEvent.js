@@ -1,15 +1,15 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const deleteEvent = async (eventToDelete) => {
+const deleteEvent = async (event) => {
     try {
         const eventsString = await AsyncStorage.getItem("@events");
         if (eventsString !== null) {
             const events = JSON.parse(eventsString);
             const updatedEvents = events.filter(
-                (event) => event.eventDateTime !== eventToDelete.eventDateTime
+                (event) => event.eventDateTime !== event.eventDateTime
             );
             await AsyncStorage.setItem("@events", JSON.stringify(updatedEvents));
-            console.log("Event removed successfully:", eventToDelete);
+            console.log("Event removed successfully:", event);
         }
     } catch (error) {
         console.error("Error removing event:", error);
