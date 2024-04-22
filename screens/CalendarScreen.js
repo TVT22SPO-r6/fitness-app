@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AddEventButton from '../components/AddEventButton';
@@ -13,11 +13,11 @@ const CalendarScreen = () => {
     const [markedDates, setMarkedDates] = useState({});
     const isFocused = useIsFocused();
 
-    useEffect(() => {
-        if (isFocused) {
-            loadEvents();
-        }
-    }, [isFocused]);
+  useEffect(() => {
+    if(isFocused){
+        loadEvents();
+    }
+  }, [isFocused]);
 
     const loadEvents = async () => {
         try {
@@ -66,23 +66,14 @@ const CalendarScreen = () => {
         return combinedEvents
     }
 
-    const handleAddEvent = (eventData) => {
-        const { description, eventDateTime, wType } = eventData;
-        if (!eventDateTime) {
-            console.error('Event date-time is undefined.');
-            return;
-        }
-        const datePart = eventDateTime.split(' ')[0];
-        if (!datePart) {
-            console.error('Invalid or undefined date part in eventDateTime.');
-            return;
-        }
-        const newEvents = { ...events, [datePart]: [...(events[datePart] || []), eventData] };
-        setEvents(newEvents);
-        AsyncStorage.setItem('@events', JSON.stringify(newEvents)).then(() => {
-            updateCalendarMarks(newEvents);
-        }).catch(err => console.error('Failed to save events:', err));
-    };
+  
+
+  const handleAddEvent = async (description, eventDateTime) => {
+    const newEvents = { ...events, [eventDateTime.split(' ')[0]]: [...(events[eventDateTime.split(' ')[0]] || []), { description, eventDateTime }] };
+    setEvents(newEvents);
+    await AsyncStorage.setItem('@events', JSON.stringify(newEvents));
+    updateCalendarMarks(newEvents);
+  };
 
     const updateCalendarMarks = (events) => {
         const newMarkedDates = {};
@@ -111,11 +102,11 @@ const CalendarScreen = () => {
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: 'white',
-        padding: 20,
-    },
+  container: {
+    flex: 1,
+    backgroundColor: 'white',
+    padding: 20,
+  },
 });
 
 export default CalendarScreen;
