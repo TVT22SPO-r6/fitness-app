@@ -1,3 +1,5 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 const deleteEvent = async (event) => {
     try {
         const eventsString = await AsyncStorage.getItem("@events");
