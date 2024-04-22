@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigation } from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { View, Text, Button, ScrollView, StyleSheet } from 'react-native';
 import { Card, Avatar, IconButton} from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -7,10 +7,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const Feed = () => {
   const navigation = useNavigation();
   const [data, setData] = useState([]);
+  const isFocused = useIsFocused();
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    if(isFocused){
+        fetchData();
+    }
+  }, [isFocused]);
+
 
   const fetchData = async () => {
     try {

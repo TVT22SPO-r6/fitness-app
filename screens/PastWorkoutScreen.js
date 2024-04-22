@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Text, View, StyleSheet, Button } from "react-native";
+import { Text, View, StyleSheet, Button, FlatList } from "react-native";
 import DeleteWorkout from "../components/DeleteWorkout";
 
 export default function PastWorkoutScreen({route, navigation}){
@@ -24,9 +24,17 @@ export default function PastWorkoutScreen({route, navigation}){
         return combinedRests
     }
 
-    const handleDelete = (workout) => {
-        DeleteWorkout(workout)
+    const handleDelete = async (workout) => {
+        await DeleteWorkout(workout)
         navigation.goBack()
+    }
+
+    const formatDuration = (duration) => {
+        if(duration >= 60){
+            return Math.floor(duration / 60) + ":" + (duration % 60)
+        }else{
+            return "0:" + duration
+        }
     }
     
     function calculateCalories(){
@@ -89,7 +97,7 @@ export default function PastWorkoutScreen({route, navigation}){
                 <View style={styles.infoBox}>
                     <View style={styles.infoTextContainer}>
                         <Text style={[styles.infoText, {fontWeight: "bold"}]}>Duration:</Text>
-                        <Text style={styles.infoText}>{duration >= 60 ? Math.floor(duration / 60) + ":" + (duration - 60) : "0:" + duration}</Text>
+                        <Text style={styles.infoText}>{formatDuration(duration)}</Text>
                     </View>
                     <View style={styles.infoTextContainer}>
                         <Text style={[styles.infoText, {fontWeight: "bold"}]}>Distance:</Text>
@@ -126,7 +134,7 @@ export default function PastWorkoutScreen({route, navigation}){
                 <View style={styles.infoBox}>
                     <View style={styles.infoTextContainer}>
                         <Text style={[styles.infoText, {fontWeight: "bold"}]}>Duration:</Text>
-                        <Text style={styles.infoText}>{duration >= 60 ? Math.floor(duration / 60) + ":" + (duration - 60) : "0:" + duration}</Text>
+                        <Text style={styles.infoText}>{formatDuration(duration)}</Text>
                     </View>
                     <View style={styles.infoTextContainer}>
                         <Text style={[styles.infoText, {fontWeight: "bold"}]}>Weights:</Text>
@@ -151,6 +159,9 @@ export default function PastWorkoutScreen({route, navigation}){
                         <Text style={styles.infoText}>{data.notes}</Text>
                     </View>
                 </View>
+                <View style={{paddingBottom: 15}}>
+                    <Button title="Delete workout" color="red" onPress={() => handleDelete(data)} />
+                </View>
             </View>
         );
     }else if(data.wType === "pushups" || data.wType === "squats"){
@@ -164,7 +175,7 @@ export default function PastWorkoutScreen({route, navigation}){
                 <View style={styles.infoBox}>
                     <View style={styles.infoTextContainer}>
                         <Text style={[styles.infoText, {fontWeight: "bold"}]}>Duration:</Text>
-                        <Text style={styles.infoText}>{duration >= 60 ? Math.floor(duration / 60) + ":" + (duration - 60) : "0:" + duration}</Text>
+                        <Text style={styles.infoText}>{formatDuration(duration)}</Text>
                     </View>
                     <View style={styles.infoTextContainer}>
                         <Text style={[styles.infoText, {fontWeight: "bold"}]}>Reps:</Text>
@@ -185,8 +196,56 @@ export default function PastWorkoutScreen({route, navigation}){
                         <Text style={styles.infoText}>{data.notes}</Text>
                     </View>
                 </View>
+                <View style={{paddingBottom: 15}}>
+                    <Button title="Delete workout" color="red" onPress={() => handleDelete(data)} />
+                </View>
             </View>
         );
+    }else if(data.wType === "muscles"){
+        return (
+            <View style={styles.container}>
+                <View style={styles.titleBox}>
+                    <Text style={styles.titleFont} >{data.wType}</Text>
+                    <Text>{data.combinedStart.split("T")[0]}</Text>
+                    <Text>{new Date(data.combinedStart).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text>
+                </View>
+                <View style={styles.infoBox}>
+                    <View style={styles.infoTextContainer}>
+                        <Text style={[styles.infoText, {fontWeight: "bold"}]}>Duration:</Text>
+                        <Text style={styles.infoText}>{formatDuration(duration)}</Text>
+                    </View>
+                    <View style={styles.infoTextContainer}>
+                        <Text style={[styles.infoText, {fontWeight: "bold"}]}>Muscle sets:</Text>
+                        <FlatList style={{flex: 1, textAlign: "justify"}} data={data.muscleSets} renderItem={({item}) =>
+                            <Text style={styles.infoText}>{item.muscleType}: {item.weight} kg, {item.reps}x{item.sets}</Text>
+                        }/>
+                    </View>
+                    { data.restTimes.length === 0 ? <></> :
+                    <View style={styles.infoTextContainer}>
+                        <Text style={[styles.infoText, {fontWeight: "bold"}]}>Rest:</Text>
+                        <Text style={styles.infoText}>{restTimes} min</Text>
+                    </View>
+                    }
+                    <View style={styles.infoTextContainer}>
+                        <Text style={[styles.infoText, {fontWeight: "bold"}]}>Calories Burned:</Text>
+                        <Text style={styles.infoText}>{calculateCalories()} kcal</Text>
+                    </View>
+                    <View style={styles.infoTextContainer}>
+                        <Text style={[styles.infoText, {fontWeight: "bold"}]}>Notes:</Text>
+                        <Text style={styles.infoText}>{data.notes}</Text>
+                    </View>
+                </View>
+                <View style={{paddingBottom: 15}}>
+                    <Button title="Delete workout" color="red" onPress={() => handleDelete(data)} />
+                </View>
+            </View>
+        );
+    }else{
+        <View style={styles.container}>
+            <View style={styles.titleBox}>
+                <Text style={styles.titleFont} >Couldn't find workout</Text>
+            </View>
+        </View>
     }
 }
 

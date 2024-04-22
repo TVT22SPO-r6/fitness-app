@@ -14,9 +14,10 @@ const Day = ({ selectedDate, events }) => {
 
     const renderEvents = () => events.map((event, index) => (
         <View key={index} style={styles.event}>
-            <Text style={styles.eventText}>
-                Time: {new Date(event.eventDateTime || event.combinedStart).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                {'\n'}Description: {event.description}
+            <Text style={styles.eventText} onPress={() => {event.combinedStart !== undefined ? navigation.navigate("Past Workout", {workout: event}) : {}}}>
+                Time: {event.eventDateTime !== undefined ? new Date(event.eventDateTime || event.combinedStart).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                : new Date(event.combinedStart).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                {'\n'}Description: {event.description !== undefined ? event.description : event.wType}
             </Text>
             <Button
                 title="Start Workout"
