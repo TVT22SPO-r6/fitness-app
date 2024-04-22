@@ -76,11 +76,14 @@ const CalendarScreen = () => {
     };
 
     const updateCalendarMarks = (events) => {
-      const newMarkedDates = Object.keys(events).reduce((acc, date) => ({
-          ...acc, [date]: { marked: true, dotColor: 'blue' }
-      }), {});
-      setMarkedDates(newMarkedDates);
-  };
+        const newMarkedDates = {};
+        Object.keys(events).forEach(date => {
+            if (events[date] && events[date].length > 0) {
+                newMarkedDates[date] = { marked: true };
+            }
+        });
+        setMarkedDates(newMarkedDates);
+    };
 
     return (
         <View style={styles.container}>
