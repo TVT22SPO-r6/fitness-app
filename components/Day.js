@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
 export default Day;
 
 
-{/*
+/*
 tähän lisätty Delete event -button. 
 
 import React from 'react';
@@ -149,4 +149,4 @@ const styles = StyleSheet.create({
 });
 
 export default Day;
-/*}
+*/
