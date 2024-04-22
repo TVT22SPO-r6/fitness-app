@@ -9,6 +9,7 @@ import { useIsFocused } from '@react-navigation/native';
 const CalendarScreen = () => {
     const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
     const [events, setEvents] = useState({});
+    const [workoutsEvents, setWorkoutsEvents] = useState({})
     const [markedDates, setMarkedDates] = useState({});
     const isFocused = useIsFocused();
 
@@ -21,15 +22,49 @@ const CalendarScreen = () => {
     const loadEvents = async () => {
         try {
             const storedEvents = await AsyncStorage.getItem('@events');
-            if (storedEvents) {
-                const newEvents = JSON.parse(storedEvents);
-                setEvents(newEvents);
-                updateCalendarMarks(newEvents);
-            }
+            const storedWorkouts = await AsyncStorage.getItem('savedWorkouts')
+            const combinedEvents = makeEvents(
+                storedEvents ? JSON.parse(storedEvents) : {},
+                storedWorkouts ? JSON.parse(storedWorkouts) : []
+            )
+            setWorkoutsEvents(combinedEvents)
+            updateCalendarMarks(combinedEvents)
         } catch (error) {
             console.error('Error loading events:', error);
         }
     };
+
+    const makeEvents = (eventData, workoutData) => {
+        var combinedEvents = {}
+        
+        if(workoutData.length !== 0){
+            workoutData.forEach(workout => {
+                const date = workout.combinedStart.split("T")[0]
+                if(date in combinedEvents){
+    
+                    combinedEvents[date] = [...combinedEvents, workout]
+                }else{
+    
+                    combinedEvents[date] = [workout]
+                }
+            })
+        }
+    
+        if(JSON.stringify(eventData) !== "{}"){
+            setEvents(eventData)
+            Object.keys(eventData).forEach(date => {
+                eventData[date].forEach(event => {
+                    if(JSON.stringify(combinedEvents) === "{}"){
+                        combinedEvents[date] = [event]
+                    }else{
+                        combinedEvents[date] ? combinedEvents[date] = [...combinedEvents[date], event] : combinedEvents[date] = [event]
+                    }
+                })
+            })
+        }
+    
+        return combinedEvents
+    }
 
     const handleAddEvent = (eventData) => {
         const { description, eventDateTime, wType } = eventData;
@@ -70,7 +105,7 @@ const CalendarScreen = () => {
                 markedDates={{...markedDates, [selectedDate]: { ...markedDates[selectedDate], selected: true }}}
             />
             <AddEventButton onAddEvent={handleAddEvent} />
-            <Day selectedDate={selectedDate} events={events[selectedDate] || []} />
+            <Day selectedDate={selectedDate} events={workoutsEvents[selectedDate] || []} />
         </View>
     );
 };
