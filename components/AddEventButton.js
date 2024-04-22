@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { View, Button, TextInput, Modal, StyleSheet, Text } from 'react-native';
+import { View, Button, Modal, StyleSheet, Text, Pressable } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Picker } from '@react-native-picker/picker';
+import { TextInput } from 'react-native-paper';
 
 const AddEventButton = ({ onAddEvent }) => {
     const [modalVisible, setModalVisible] = useState(false);
@@ -33,8 +34,6 @@ const AddEventButton = ({ onAddEvent }) => {
         setModalVisible(false);
     };
     
-  
-  
 
     const resetInputs = () => {
         setDescription('');
@@ -42,6 +41,7 @@ const AddEventButton = ({ onAddEvent }) => {
         setTime(new Date());
         setWorkoutType('Biking'); // Reset to default type
     };
+
 
     return (
         <View style={styles.container}>
@@ -71,19 +71,34 @@ const AddEventButton = ({ onAddEvent }) => {
                         <Picker.Item label="Weights" value="Weights" />
                         <Picker.Item label="Push-Ups" value="Push-Ups" />
                     </Picker>
-                    <Button title="Choose Date" onPress={() => setShowDatePicker(true)} />
+
+                    <Pressable onPress={() => setShowDatePicker(true)} style={styles.pressable}>
+                        <TextInput
+                            style={styles.input}
+                            value={date.toLocaleDateString()}
+                            editable={false}
+                        />
+                    </Pressable>
                     {showDatePicker && (
                         <DateTimePicker
                             value={date}
                             mode="date"
                             display="default"
                             onChange={(event, selectedDate) => {
-                                setDate(selectedDate || date);
                                 setShowDatePicker(false);
+                                setDate(selectedDate || date);
                             }}
+                            
                         />
                     )}
-                    <Button title="Choose Time" onPress={() => setShowTimePicker(true)} />
+
+                    <Pressable onPress={() => setShowTimePicker(true)} style={styles.pressable}>
+                        <TextInput
+                            style={styles.input}
+                            value={time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                            editable={false}
+                        />
+                    </Pressable>
                     {showTimePicker && (
                         <DateTimePicker
                             value={time}
@@ -91,19 +106,20 @@ const AddEventButton = ({ onAddEvent }) => {
                             is24Hour={true}
                             display="default"
                             onChange={(event, selectedTime) => {
-                                setTime(selectedTime || time);
                                 setShowTimePicker(false);
+                                setTime(selectedTime || time);
                             }}
                         />
                     )}
+
                     <Button title="Add" onPress={handleAddEvent} />
                     <Button title="Cancel" onPress={() => {
                         setModalVisible(false);
                         resetInputs();
                     }} />
                 </View>
-            </Modal>
-        </View>
+            </Modal >
+        </View >
     );
 };
 
@@ -124,13 +140,18 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         paddingHorizontal: 10,
         borderWidth: 1,
+        backgroundColor: 'white',
         borderColor: 'gray',
     },
     picker: {
-        width: '100%',
+        width: '80%',
         marginBottom: 20,
+    },
+    pressable: {
+        width: '80%',
+        uppercase: false,
+        mode: 'outlined',
     },
 });
 
 export default AddEventButton;
-
