@@ -13,30 +13,26 @@ const AddEventButton = ({ onAddEvent }) => {
     const [showTimePicker, setShowTimePicker] = useState(false);
 
     const handleAddEvent = () => {
-      if (!date || !time) {
-          console.error('Error: Date or time is undefined.');
-          return;
-      }
-  
-      const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
-      const formattedTime = `${time.getHours().toString().padStart(2, '0')}:${time.getMinutes().toString().padStart(2, '0')}`;
-      const eventDateTime = `${formattedDate} ${formattedTime}`;
-  
-      console.log("Event Date-Time:", eventDateTime); // Ensure this logs correctly
-  
-      if (!eventDateTime) {
-          console.error('Event date-time is undefined.');
-          return;
-      }
-  
-      // Assuming onAddEvent expects an object with these properties
-      onAddEvent({
-          description,
-          eventDateTime,
-          wType: workoutType
-      });
-      setModalVisible(false);
-  };
+        if (!date || !time) {
+            console.error('Error: Date or time is undefined.');
+            return;
+        }
+    
+        const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
+        const formattedTime = `${time.getHours().toString().padStart(2, '0')}:${time.getMinutes().toString().padStart(2, '0')}`;
+        const eventDateTime = `${formattedDate} ${formattedTime}`;
+    
+        console.log("Event Date-Time:", eventDateTime); 
+    
+        if (!eventDateTime) {
+            console.error('Event date-time is undefined.');
+            return;
+        }
+    
+        onAddEvent(description, eventDateTime, workoutType);
+        setModalVisible(false);
+    };
+    
   
   
 
@@ -137,3 +133,4 @@ const styles = StyleSheet.create({
 });
 
 export default AddEventButton;
+
