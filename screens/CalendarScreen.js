@@ -53,7 +53,7 @@ const CalendarScreen = () => {
         const newMarkedDates = {};
         Object.keys(events).forEach(date => {
             if (events[date] && events[date].length > 0) {
-                newMarkedDates[date] = { marked: true, dotColor: 'blue' };
+                newMarkedDates[date] = { marked: true };
             }
         });
         setMarkedDates(newMarkedDates);
