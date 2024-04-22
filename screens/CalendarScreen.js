@@ -5,18 +5,44 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import AddEventButton from '../components/AddEventButton';
 import Day from '../components/Day';
 import { useIsFocused } from '@react-navigation/native';
+import AlertNotification from '../components/AlertNotification';
 
 const CalendarScreen = () => {
     const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
     const [events, setEvents] = useState({});
     const [markedDates, setMarkedDates] = useState({});
+    const [showAlert, setShowAlert] = useState(false);
     const isFocused = useIsFocused();
+    const [handledEvents, setHandledEvents] = useState(new Set());
 
     useEffect(() => {
         if (isFocused) {
             loadEvents();
         }
     }, [isFocused]);
+
+    useEffect(() => {
+      const timer = setInterval(() => {
+          const now = new Date();
+          Object.values(events).flat().forEach(event => {
+              const eventTime = new Date(event.eventDateTime);
+              const eventID = `${eventTime.getHours()}:${eventTime.getMinutes()}`; // Unique ID per time
+
+              if (now > eventTime && !handledEvents.has(eventID)) {
+                  setShowAlert(true);
+                  handledEvents.add(eventID); // Mark this event time as handled
+                  setHandledEvents(new Set(handledEvents));
+              }
+          });
+      }, 10000);
+
+      return () => clearInterval(timer);
+  }, [events, handledEvents]);
+
+  const onCloseAlert = () => {
+      setShowAlert(false);
+  };
+
 
     const loadEvents = async () => {
         try {
@@ -50,14 +76,11 @@ const CalendarScreen = () => {
     };
 
     const updateCalendarMarks = (events) => {
-        const newMarkedDates = {};
-        Object.keys(events).forEach(date => {
-            if (events[date] && events[date].length > 0) {
-                newMarkedDates[date] = { marked: true, dotColor: 'blue' };
-            }
-        });
-        setMarkedDates(newMarkedDates);
-    };
+      const newMarkedDates = Object.keys(events).reduce((acc, date) => ({
+          ...acc, [date]: { marked: true, dotColor: 'blue' }
+      }), {});
+      setMarkedDates(newMarkedDates);
+  };
 
     return (
         <View style={styles.container}>
@@ -67,10 +90,11 @@ const CalendarScreen = () => {
                 monthFormat={'MMMM yyyy'}
                 firstDay={1}
                 enableSwipeMonths={true}
-                markedDates={{...markedDates, [selectedDate]: { ...markedDates[selectedDate], selected: true }}}
+                markedDates={markedDates}
             />
             <AddEventButton onAddEvent={handleAddEvent} />
             <Day selectedDate={selectedDate} events={events[selectedDate] || []} />
+            <AlertNotification show={showAlert} onClose={onCloseAlert} />
         </View>
     );
 };
