@@ -18,22 +18,22 @@ const AddEventButton = ({ onAddEvent }) => {
             console.error('Error: Date or time is undefined.');
             return;
         }
-    
+
         const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
         const formattedTime = `${time.getHours().toString().padStart(2, '0')}:${time.getMinutes().toString().padStart(2, '0')}`;
         const eventDateTime = `${formattedDate} ${formattedTime}`;
-    
-        console.log("Event Date-Time:", eventDateTime); 
-    
+
+        console.log("Event Date-Time:", eventDateTime);
+
         if (!eventDateTime) {
             console.error('Event date-time is undefined.');
             return;
         }
-    
+
         onAddEvent(description, eventDateTime, workoutType);
         setModalVisible(false);
     };
-    
+
 
     const resetInputs = () => {
         setDescription('');
@@ -71,47 +71,50 @@ const AddEventButton = ({ onAddEvent }) => {
                         <Picker.Item label="Weights" value="Weights" />
                         <Picker.Item label="Push-Ups" value="Push-Ups" />
                     </Picker>
+                    <View style={styles.datetime}>
+                        <Pressable onPress={() => setShowDatePicker(true)}>
+                            <TextInput
+                                mode="outlined"
+                                label="Date"
+                                value={date.toLocaleDateString()}
+                                editable={false}
+                                selectTextOnFocus={false}
+                            />
+                        </Pressable>
+                        {showDatePicker && (
+                            <DateTimePicker
+                                value={date}
+                                mode="date"
+                                display="default"
+                                onChange={(event, selectedDate) => {
+                                    setShowDatePicker(false);
+                                    setDate(selectedDate || date);
+                                }}
 
-                    <Pressable onPress={() => setShowDatePicker(true)} style={styles.pressable}>
-                        <TextInput
-                            style={styles.input}
-                            value={date.toLocaleDateString()}
-                            editable={false}
-                        />
-                    </Pressable>
-                    {showDatePicker && (
-                        <DateTimePicker
-                            value={date}
-                            mode="date"
-                            display="default"
-                            onChange={(event, selectedDate) => {
-                                setShowDatePicker(false);
-                                setDate(selectedDate || date);
-                            }}
-                            
-                        />
-                    )}
+                            />
+                        )}
 
-                    <Pressable onPress={() => setShowTimePicker(true)} style={styles.pressable}>
-                        <TextInput
-                            style={styles.input}
-                            value={time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                            editable={false}
-                        />
-                    </Pressable>
-                    {showTimePicker && (
-                        <DateTimePicker
-                            value={time}
-                            mode="time"
-                            is24Hour={true}
-                            display="default"
-                            onChange={(event, selectedTime) => {
-                                setShowTimePicker(false);
-                                setTime(selectedTime || time);
-                            }}
-                        />
-                    )}
-
+                        <Pressable onPress={() => setShowTimePicker(true)} uppercase={false} mode="outlined">
+                            <TextInput
+                                mode="outlined"
+                                label="Time"
+                                value={time ? time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : "0:00"}
+                                editable={false}
+                                selectTextOnFocus={false}
+                            />
+                        </Pressable>
+                        {showTimePicker && (
+                            <DateTimePicker
+                                value={time}
+                                mode="time"
+                                is24Hour={true}
+                                onChange={(event, selectedTime) => {
+                                    setShowTimePicker(false);
+                                    setTime(selectedTime || time);
+                                }}
+                            />
+                        )}
+                    </View>
                     <Button title="Add" onPress={handleAddEvent} />
                     <Button title="Cancel" onPress={() => {
                         setModalVisible(false);
@@ -147,11 +150,10 @@ const styles = StyleSheet.create({
         width: '80%',
         marginBottom: 20,
     },
-    pressable: {
-        width: '80%',
-        uppercase: false,
-        mode: 'outlined',
+    datetime: {
+        flexDirection: 'row',
     },
 });
 
 export default AddEventButton;
+
