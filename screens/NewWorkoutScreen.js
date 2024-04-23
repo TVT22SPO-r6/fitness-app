@@ -3,11 +3,16 @@ import React, { useState } from "react";
 import {StyleSheet, ScrollView } from "react-native";
 import { SelectList } from 'react-native-dropdown-select-list'
 import AddWorkout from '../components/AddWorkout';
+import { useRoute } from '@react-navigation/native';
 
 export default function NewWorkoutScreen(){
   const [workoutType, setWorkoutType] = useState('');
+  const route = useRoute();
+  const params = route.params
 
-  // Expanded workout type list including handling for additional types.
+
+
+  
   const workoutTypeList = [
     {
       key: "biking",
@@ -42,16 +47,22 @@ export default function NewWorkoutScreen(){
  
 
     return (
-        <PaperProvider>
-          <ScrollView>
-          <SelectList
-           setSelected={(val) => setWorkoutType(val)} 
-           data={workoutTypeList} 
-           save="key" 
-        />
-        <AddWorkout wType={workoutType} sType="AddNew"/>
+      <PaperProvider>
+        <ScrollView>
+          {params ? (
+            <AddWorkout wType={params.wType} sType='current' date={params.date} startTime={params.startTime} endTime={params.endTime} desc={params.desc}/>
+          ) : (
+            <>
+              <SelectList
+              setSelected={(val) => setWorkoutType(val)} 
+              data={workoutTypeList} 
+              save="key" 
+              />
+              <AddWorkout wType={workoutType}/>
+            </>
+          )}
         </ScrollView>
-        </PaperProvider>
+      </PaperProvider>
     );
 
 }

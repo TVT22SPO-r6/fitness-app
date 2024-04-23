@@ -10,7 +10,7 @@ import {useState, Component} from 'react';
 import { View} from 'react-native';
 import { TextInput, PaperProvider, Text, Button, Portal, Dialog} from 'react-native-paper';
 
-export default function AddBiking() {
+export default function AddBiking(sType, date, startTime, endTime, desc,) {
     const wType  = "biking"
     const [dateFromChild, setDateFromChild] = useState(null)
     const [startTimeFromChild, setStartTimeFromChild] = useState(null)
@@ -23,6 +23,14 @@ export default function AddBiking() {
 
     const [visible, setVisible] = useState(false)
     const navigation = useNavigation()
+
+
+    if (sType === 'current'){
+      setDateFromChild(date)
+      setStartTimeFromChild(startTime)
+      setEndTimeFromChild(endTime)
+      setNotes(desc)
+    }
 
     const handleDateChange = (dateOnly) => {
       setDateFromChild(dateOnly)
@@ -82,11 +90,19 @@ export default function AddBiking() {
 
     return (
       <PaperProvider>
-        <View style={{ flexDirection: 'row' }}>
+        {sType === 'current' ? (
+         <View style={{ flexDirection: 'row' }}>
+          <TextInput placeholder='Date' editable={false} selectTextOnFocus={false} value={dateFromChild}/>
+          <TextInput placeholder='Start Time' editable={false} selectTextOnFocus={false} value={startTimeFromChild}/>
+          <TextInput placeholder='End Time' editable={false} selectTextOnFocus={false} value={endTimeFromChild}/>
+        </View> 
+        ) : (
+          <View style={{ flexDirection: 'row' }}>
             <SelectDate onDateChange={handleDateChange}/>
             <SelectTime label="Start Time" onTimeChange={handleStartTimeChange}/>
             <SelectTime label="End Time" onTimeChange={handleEndTimeChange}/>
           </View>
+        )}
           <RestTime onChange={handleRestTimesChange}/>
           <View>
       </View>
