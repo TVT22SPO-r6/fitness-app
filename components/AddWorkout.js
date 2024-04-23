@@ -9,41 +9,37 @@ import ViewAllData from './ViewAllData';
 import AddMuscleTraining from './AddMuscleTraining';
 import {PaperProvider} from 'react-native-paper';
 
-export default function AddWorkout({wType, sType}) {
+export default function AddWorkout({ wType, sType, date, startTime, endTime, desc }) {
 
 const typeContentMap = {
   "biking": (
     <>
-     <AddBiking sType={sType}/>
+     <AddBiking sType={sType} date={date} startTime={startTime} endTime={endTime} desc={desc}/>
     </>
   ),
   "running": (
     <>
-      <AddRunning sType={sType}/>
+      <AddRunning sType={sType} date={date} startTime={startTime} endTime={endTime} desc={desc}/>
     </>
   ),
   "weights": (
     <>
-      <AddWeights sType={sType}/>
+      <AddWeights sType={sType} date={date} startTime={startTime} endTime={endTime} desc={desc}/>
     </>
   ),
   "pushups": (
     <>
-      <AddPushups sType={sType}/>
+      <AddPushups sType={sType} date={date} startTime={startTime} endTime={endTime} desc={desc}/>
     </>
   ),
   "squats": (
     <>
-      <AddSquats sType={sType}/>
+      <AddSquats sType={sType} date={date} startTime={startTime} endTime={endTime} desc={desc}/>
     </>
   ),
   "muscles": (
     <>
-      <AddMuscleTraining sType={sType}/>
-    </>
-  ),
-  "others": (
-    <>
+      <AddMuscleTraining sType={sType} date={date} startTime={startTime} endTime={endTime} desc={desc}/>
     </>
   ),
   "savedData": (

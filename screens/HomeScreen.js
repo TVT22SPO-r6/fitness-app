@@ -2,7 +2,6 @@
 import { useLayoutEffect } from "react";
 import { Button, Text, View, StyleSheet, SafeAreaView } from "react-native";
 import Feed from "../components/Feed";
-import WorkoutPlanScreen from "./WorkoutPlanScreen";
 import AlertNotification from "../components/AlertNotification";
 
 export default function HomeScreen({navigation}){
