@@ -42,7 +42,7 @@ const CalendarScreen = () => {
                 const date = workout.combinedStart.split("T")[0]
                 if(date in combinedEvents){
     
-                    combinedEvents[date] = [...combinedEvents, workout]
+                    combinedEvents[date] = [...combinedEvents[date], workout]
                 }else{
     
                     combinedEvents[date] = [workout]
@@ -68,11 +68,12 @@ const CalendarScreen = () => {
 
   
 
-  const handleAddEvent = async (description, eventDateTime) => {
-    const newEvents = { ...events, [eventDateTime.split(' ')[0]]: [...(events[eventDateTime.split(' ')[0]] || []), { description, eventDateTime }] };
+  const handleAddEvent = async (description, eventDateTime, workoutType) => {
+    const newEvents = { ...events, [eventDateTime.split(' ')[0]]: [...(events[eventDateTime.split(' ')[0]] || []), { description, eventDateTime, workoutType }] };
     setEvents(newEvents);
     await AsyncStorage.setItem('@events', JSON.stringify(newEvents));
     updateCalendarMarks(newEvents);
+    loadEvents()
   };
 
     const updateCalendarMarks = (events) => {

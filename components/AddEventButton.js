@@ -10,7 +10,7 @@ const AddEventButton = ({ onAddEvent }) => {
     const [description, setDescription] = useState('');
     const [date, setDate] = useState(new Date());
     const [time, setTime] = useState(new Date());
-    const [workoutType, setWorkoutType] = useState('Biking');
+    const [workoutType, setWorkoutType] = useState('biking');
     const [showDatePicker, setShowDatePicker] = useState(false);
     const [showTimePicker, setShowTimePicker] = useState(false);
 
@@ -40,7 +40,7 @@ const AddEventButton = ({ onAddEvent }) => {
         setDescription('');
         setDate(new Date());
         setTime(new Date());
-        setWorkoutType('Biking'); // Reset to default type
+        setWorkoutType('biking'); // Reset to default type
     };
 
 
@@ -67,10 +67,11 @@ const AddEventButton = ({ onAddEvent }) => {
                         onValueChange={(itemValue) => setWorkoutType(itemValue)}
                         style={styles.picker}
                     >
-                        <Picker.Item label="Biking" value="Biking" />
-                        <Picker.Item label="Running" value="Running" />
-                        <Picker.Item label="Weights" value="Weights" />
-                        <Picker.Item label="Push-Ups" value="Push-Ups" />
+                        <Picker.Item label="Biking" value="biking" />
+                        <Picker.Item label="Running" value="running" />
+                        <Picker.Item label="Weights" value="weights" />
+                        <Picker.Item label="Squats" value="squats" />
+                        <Picker.Item label="Muscle Training" value="muscles" />
                     </Picker>
                     <View style={styles.datetime}>
                         <Pressable onPress={() => setShowDatePicker(true)}>

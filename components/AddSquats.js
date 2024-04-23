@@ -6,11 +6,11 @@ import NumericTextInput from './NumberInput';
 import NumberSelector from './NumberSelector';
 import RestTime from './RestTime';
 import saveData from './SaveData';
-import {useState, Component} from 'react';
+import {useState, Component, useEffect} from 'react';
 import { View} from 'react-native';
 import { TextInput, PaperProvider, Text, Button, Portal, Dialog} from 'react-native-paper';
 
-export default function AddSquats() {
+export default function AddSquats({sType, date, startTime, endTime, desc}) {
     const wType  = "squats"
     const [dateFromChild, setDateFromChild] = useState(null)
     const [startTimeFromChild, setStartTimeFromChild] = useState(null)
@@ -19,6 +19,20 @@ export default function AddSquats() {
     const [intensity, setIntensity] = useState(null)
     const [notes, setNotes] = useState(null)
     const [allRestTimes, setAllRestTimes] = useState([]);
+    const displayDate = new Date(date)
+    const displaySTime = new Date(startTime)
+    const displayETime = new Date(endTime)
+
+    
+    useEffect(() => {
+      if (sType === 'current') {
+        setDateFromChild(date);
+        setStartTimeFromChild(startTime);
+        setEndTimeFromChild(endTime);
+        setNotes(desc);
+      }
+    }, [sType, date, startTime, endTime, desc])
+
 
 
     const [visible, setVisible] = useState(false)
@@ -83,14 +97,22 @@ export default function AddSquats() {
 
     return (
       <PaperProvider>
+      {sType === 'current' ? (
+       <View style={{ flexDirection: 'row' }}>
+        <TextInput label='Date' mode="outlined" placeholder='Date' editable={false} selectTextOnFocus={false} value={displayDate.toLocaleDateString()}/>
+        <TextInput label='Start Time' mode="outlined" placeholder='Start Time' editable={false} selectTextOnFocus={false} value={displaySTime.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}/>
+        <TextInput label='End Time' mode="outlined" placeholder='End Time' editable={false} selectTextOnFocus={false} value={displayETime.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}/>
+      </View> 
+      ) : (
           <View style={{ flexDirection: 'row' }}>
             <SelectDate onDateChange={handleDateChange}/>
             <SelectTime label="Start Time" onTimeChange={handleStartTimeChange}/>
             <SelectTime label="End Time" onTimeChange={handleEndTimeChange}/>
           </View>
+        )}
           <RestTime onChange={handleRestTimesChange}/>
           <NumericTextInput label='Reps' onNumChange={handleNumChange} minVal={0} maxVal={999}/>
-          <TextInput placeholder='Notes' multiline={true} onChangeText={handleNotesChange}/>
+          <TextInput placeholder='Notes' multiline={true} onChangeText={handleNotesChange} value={notes}/>
           <NumberSelector onSelect={handleNumberSelect} />
           <Button onPress={() => saveDataAndReset(wType, dateFromChild, startTimeFromChild, endTimeFromChild, repsFromChild, intensity, notes, allRestTimes)} mode='contained'>Add Workout</Button>
           <Portal>

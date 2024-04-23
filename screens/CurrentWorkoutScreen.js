@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Button, StyleSheet } from "react-native";
-import { useWorkout } from '../components/WorkoutContext';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function CurrentWorkoutScreen() {
     const navigation = useNavigation();
-    const { currentWorkout } = useWorkout();
     const route = useRoute();
+    const {workout} = route.params;
     const [timer, setTimer] = useState(0);
     const [intervalId, setIntervalId] = useState(null);
-    const workout = route.params?.workout || currentWorkout;
     const [workoutStarted, setWorkoutStarted] = useState(false);
     const [startTime, setStartTime] = useState(null);
 
@@ -57,7 +55,7 @@ function CurrentWorkoutScreen() {
                 }
             }
             navigation.navigate('New Workout', {
-                wType: workout.wType,
+                wType: workout.workoutType,
                 date: startTime.toISOString(), 
                 startTime: startTime.toISOString(),
                 endTime: endTime.toISOString(),
@@ -79,7 +77,7 @@ function CurrentWorkoutScreen() {
     return (
         <View style={styles.container}>
             <Text style={styles.header}>Current Workout</Text>
-            <Text>Type: {workout?.wType}</Text>
+            <Text>Type: {workout?.workoutType}</Text>
             <Text>Notes: {workout?.description}</Text>
             <Text>Timer: {formatTime()}</Text>
             {!workoutStarted && <Button title="Start Workout" onPress={startTimer} />}

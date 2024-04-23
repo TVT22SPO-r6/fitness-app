@@ -1,16 +1,13 @@
 import React from 'react';
 import { View, Text, StyleSheet, Button, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { useWorkout } from '../components/WorkoutContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Day = ({ selectedDate, events }) => {
     const navigation = useNavigation();
-    const { updateCurrentWorkout } = useWorkout();
 
-    const handleStartWorkout = (event) => {
-        updateCurrentWorkout(event);
-        navigation.navigate('Current Workout');
+    const handleStartWorkout = (workout) => {
+       navigation.navigate('Current Workout', {workout});
     };
 
     const handleDeleteEvent = async (event) => {
