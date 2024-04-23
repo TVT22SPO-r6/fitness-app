@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { View, Button, Modal, StyleSheet, Text, Pressable } from 'react-native';
+import { View, Modal, StyleSheet, Text, Pressable } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Picker } from '@react-native-picker/picker';
 import { TextInput } from 'react-native-paper';
+import { Button } from 'react-native-paper';
 
 const AddEventButton = ({ onAddEvent }) => {
     const [modalVisible, setModalVisible] = useState(false);
@@ -45,7 +46,7 @@ const AddEventButton = ({ onAddEvent }) => {
 
     return (
         <View style={styles.container}>
-            <Button title="Add Event" onPress={() => setModalVisible(true)} />
+            <Button onPress={() => setModalVisible(true)} mode='contained'>Add event</Button>
             <Modal
                 visible={modalVisible}
                 animationType="slide"
@@ -115,11 +116,11 @@ const AddEventButton = ({ onAddEvent }) => {
                             />
                         )}
                     </View>
-                    <Button title="Add" onPress={handleAddEvent} />
-                    <Button title="Cancel" onPress={() => {
+                    <Button onPress={handleAddEvent}>Add</Button>
+                    <Button onPress={() => {
                         setModalVisible(false);
                         resetInputs();
-                    }} />
+                    }}>Cancel</Button>
                 </View>
             </Modal >
         </View >
