@@ -51,11 +51,6 @@ export default function NewWorkoutScreen(){
         <ScrollView>
           {params ? (
             <>
-            <Text>{params.endTime}</Text>
-            <Text>{params.startTime}</Text>
-            <Text>{params.date}</Text>
-            <Text>{params.wType}</Text>
-            <Text>{params.desc}</Text>
             <AddWorkout wType={params.wType} sType='current' date={params.date} startTime={params.startTime} endTime={params.endTime} desc={params.desc}/>
             </>
           ) : (
