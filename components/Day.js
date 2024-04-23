@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, Text, StyleSheet, Button } from 'react-native';
+import { View, Text, StyleSheet, Button, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useWorkout } from '../components/WorkoutContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Day = ({ selectedDate, events }) => {
     const navigation = useNavigation();
@@ -10,6 +11,21 @@ const Day = ({ selectedDate, events }) => {
     const handleStartWorkout = (event) => {
         updateCurrentWorkout(event);
         navigation.navigate('Current Workout');
+    };
+
+    const handleDeleteEvent = async (event) => {
+        try {
+            const storedEvents = await AsyncStorage.getItem('@events');
+            if (storedEvents) {
+                let eventsObj = JSON.parse(storedEvents);
+                const eventDateKey = new Date(event.eventDateTime).toISOString().split('T')[0];
+                eventsObj[eventDateKey] = eventsObj[eventDateKey].filter(e => e.eventDateTime !== event.eventDateTime);
+                await AsyncStorage.setItem('@events', JSON.stringify(eventsObj));
+                Alert.alert('Event deleted successfully');
+            }
+        } catch (error) {
+            console.error("Failed to delete event:", error);
+        }
     };
 
     const renderEvents = () => events.map((event, index) => (
@@ -22,6 +38,10 @@ const Day = ({ selectedDate, events }) => {
             <Button
                 title="Start Workout"
                 onPress={() => handleStartWorkout(event)}
+            />
+            <Button
+                title="Delete Event"
+                onPress={() => handleDeleteEvent(event)}
             />
         </View>
     ));
