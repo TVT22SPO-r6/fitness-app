@@ -33,6 +33,9 @@ const Day = ({ onEventChange, selectedDate, events }) => {
                 : new Date(event.combinedStart).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                 {'\n'}Description: {event.description !== undefined ? event.description : event.wType}
             </Text>
+            
+          {event.combinedStart === undefined ? (
+            <>
             <Button
                 title="Start Workout"
                 onPress={() => handleStartWorkout(event)}
@@ -41,6 +44,10 @@ const Day = ({ onEventChange, selectedDate, events }) => {
                 title="Delete Event"
                 onPress={() => handleDeleteEvent(event)}
             />
+            </>
+            ):(
+            <></>
+            )}
         </View>
     ));
 
