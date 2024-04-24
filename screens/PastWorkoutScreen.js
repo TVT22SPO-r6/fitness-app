@@ -86,14 +86,32 @@ export default function PastWorkoutScreen({route, navigation}){
             }
         }
     }
-    
+
+    const checkWType = (workout) => {
+        if(workout.wType === "running"){
+            return {backgroundColor: "#64b3ff"}
+        }else if(workout.wType === "biking"){
+            return {backgroundColor: "#ff8282"}
+        }else if(workout.wType === "weights"){
+            return {backgroundColor: "#9acd32"}
+        }else if(workout.wType === "pushups"){
+            return {backgroundColor: "#ffd700"}
+        }else if(workout.wType === "squats"){
+            return {backgroundColor: "#dda0dd"}
+        }else if(workout.wType === "muscles"){
+            return {backgroundColor: "#ffa500"}
+        }else{
+            return {backgroundColor: "grey"}
+        }
+      }
+
     if(data.wType === "running" || data.wType === "biking"){
         return (
             <Card style={styles.container}>
                 <Card.Title
-                    style={styles.titleBox}
+                    style={[styles.titleBox, checkWType(data)]}
                     titleStyle={{fontWeight: "bold"}}
-                    title={data.wType}
+                    title={data.wType.charAt(0).toUpperCase() + data.wType.slice(1)}
                     subtitle={`For ${duration} mins`}
                     right={() => 
                         <Text style={{paddingRight: 10}}>
@@ -128,7 +146,7 @@ export default function PastWorkoutScreen({route, navigation}){
                     </Card.Content>
                     <Card.Content style={styles.infoTextContainer}>
                         <Text style={[styles.infoText, {fontWeight: "bold"}]}>Notes:</Text>
-                        <Text style={styles.infoText}>{data.notes}</Text>
+                        <Text style={styles.infoText} numberOfLines={15}>{data.notes}</Text>
                     </Card.Content>
                 </Card>
                 <Card style={styles.deleteButton}>
@@ -140,9 +158,9 @@ export default function PastWorkoutScreen({route, navigation}){
         return (
             <Card style={styles.container}>
                 <Card.Title
-                    style={styles.titleBox}
+                    style={[styles.titleBox, checkWType(data)]}
                     titleStyle={{fontWeight: "bold"}}
-                    title={data.wType}
+                    title={data.wType.charAt(0).toUpperCase() + data.wType.slice(1)}
                     subtitle={`For ${duration} mins`}
                     right={() => 
                         <Text style={{paddingRight: 10}}>
@@ -193,9 +211,9 @@ export default function PastWorkoutScreen({route, navigation}){
         return (
             <Card style={styles.container}>
                 <Card.Title
-                    style={styles.titleBox}
+                    style={[styles.titleBox, checkWType(data)]}
                     titleStyle={{fontWeight: "bold"}}
-                    title={data.wType}
+                    title={data.wType.charAt(0).toUpperCase() + data.wType.slice(1)}
                     subtitle={`For ${duration} mins`}
                     right={() => 
                         <Text style={{paddingRight: 10}}>
@@ -242,9 +260,9 @@ export default function PastWorkoutScreen({route, navigation}){
         return (
             <Card style={styles.container}>
                 <Card.Title
-                    style={styles.titleBox}
+                    style={[styles.titleBox, checkWType(data)]}
                     titleStyle={{fontWeight: "bold"}}
-                    title={data.wType}
+                    title={data.wType.charAt(0).toUpperCase() + data.wType.slice(1)}
                     subtitle={`For ${duration} mins`}
                     right={() => 
                         <Text style={{paddingRight: 10}}>
