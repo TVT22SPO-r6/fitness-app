@@ -28,6 +28,23 @@ const Feed = () => {
     }
   };
 
+  const checkWType = (workout) => {
+    if(workout.wType === "running"){
+        return styles.runningColor
+    }else if(workout.wType === "biking"){
+        return styles.bikingColor
+    }else if(workout.wType === "weights"){
+        return styles.weightsColor
+    }else if(workout.wType === "pushups"){
+        return styles.pushupsColor
+    }else if(workout.wType === "squats"){
+        return styles.squatsColor
+    }else if(workout.wType === "muscles"){
+        return styles.muscleColor
+    }else{
+        return {backgroundColor: "grey"}
+    }
+  }
 
   return (
     <ScrollView style={styles.scrollView}>
@@ -38,7 +55,7 @@ const Feed = () => {
         const durationHours = Math.floor(durationMillis / 3600000)
         
         return (
-        <Card key={index} style={styles.card} onPress={() => navigation.navigate("Past Workout", {workout: item})}>
+        <Card key={index} style={[styles.card, checkWType(item)]} onPress={() => navigation.navigate("Past Workout", {workout: item})}>
             <Card.Title
                 title ={item.wType}
                 subtitle={`For ${durationHours} hrs`}
@@ -103,6 +120,24 @@ const styles = StyleSheet.create({
     card: {
         marginVertical: 5, 
         marginHorizontal: 2 
-    }
+    },
+    bikingColor: {
+        backgroundColor: "#dc143c"
+    },
+    runningColor: {
+        backgroundColor: "#1e90ff"
+    },
+    weightsColor: {
+        backgroundColor: "#9acd32"
+    },
+    pushupsColor: {
+        backgroundColor: "#ffd700"
+    },
+    squatsColor: {
+        backgroundColor: "#dda0dd"
+    },
+    muscleColor: {
+        backgroundColor: "#ffa500"
+    },
 })
 export default Feed;
