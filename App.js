@@ -5,7 +5,6 @@ import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { PaperProvider , BottomNavigation} from "react-native-paper";
-import WorkoutPlanScreen from './screens/WorkoutPlanScreen';
 import HomeScreen from './screens/HomeScreen';
 import NewWorkoutScreen from './screens/NewWorkoutScreen';
 import CurrentWorkoutScreen from './screens/CurrentWorkoutScreen';
@@ -53,7 +52,6 @@ function AppNavigator() {
     return (
         <Stack.Navigator>
             <Stack.Screen name="Main" component={BottomTabNavigator} options={{ headerShown: false }} />
-            <Stack.Screen name="Workout Plan" component={WorkoutPlanScreen} />
             <Stack.Screen name="Current Workout" component={CurrentWorkoutScreen} />
             <Stack.Screen name="Past Workout" component={PastWorkoutScreen} initialParams={{ workout: null }} />
             <Stack.Screen name="Clock" component={Clock} />
@@ -63,13 +61,11 @@ function AppNavigator() {
 
 export default function App() {
     return (
-        <WorkoutProvider>
             <TimerProvider>
                 <NavigationContainer>
                     <AppNavigator />
                 </NavigationContainer>
             </TimerProvider>
-        </WorkoutProvider>
     );
 }
 

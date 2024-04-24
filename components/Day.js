@@ -1,102 +1,36 @@
 import React from 'react';
-import { View, Text, StyleSheet, Button } from 'react-native';
+import { View, Text, StyleSheet, Button, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { useWorkout } from '../components/WorkoutContext'; // Adjust path if necessary
-
-const Day = ({ selectedDate, events }) => {
-    const navigation = useNavigation();
-    const { updateCurrentWorkout } = useWorkout();
-
-    const handleStartWorkout = (event) => {
-        updateCurrentWorkout(event);
-        navigation.navigate('Current Workout');  // Make sure this screen name matches your route configuration
-    };
-
-    const renderEvents = () => events.map((event, index) => (
-        <View key={index} style={styles.event}>
-            <Text style={styles.eventText}>
-                Time: {new Date(event.eventDateTime || event.combinedStart).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                {'\n'}Description: {event.description}
-            </Text>
-            <Button
-                title="Start Workout"
-                onPress={() => handleStartWorkout(event)}
-            />
-        </View>
-    ));
-
-    return (
-        <View style={styles.container}>
-            <Text style={styles.date}>{new Date(selectedDate).toLocaleDateString('en-GB', {
-                weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
-            })}</Text>
-            <View style={styles.eventsContainer}>
-                {events.length > 0 ? renderEvents() : <Text>No Events</Text>}
-            </View>
-        </View>
-    );
-};
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    date: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        marginBottom: 10,
-    },
-    eventsContainer: {
-        width: '100%',
-    },
-    event: {
-        backgroundColor: '#1E90FF',
-        padding: 10,
-        borderRadius: 5,
-        width: '90%',
-        marginVertical: 5,
-        marginLeft: '5%',
-    },
-    eventText: {
-        color: 'white',
-    }
-});
-
-export default Day;
-
-
-{/*
-tähän lisätty Delete event -button. 
-
-import React from 'react';
-import { View, Text, StyleSheet, Button } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import deleteEvent from './DeleteEvent';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Day = ({ selectedDate, events }) => {
     const navigation = useNavigation();
 
-    const handleStartWorkout = (event) => {
-        updateCurrentWorkout(event);
-        navigation.navigate('Current Workout');
+    const handleStartWorkout = (workout) => {
+       navigation.navigate('Current Workout', {workout});
     };
 
     const handleDeleteEvent = async (event) => {
         try {
-            await deleteEvent(event);
-            navigation.navigate('Calendar'); 
+            const storedEvents = await AsyncStorage.getItem('@events');
+            if (storedEvents) {
+                let eventsObj = JSON.parse(storedEvents);
+                const eventDateKey = new Date(event.eventDateTime).toISOString().split('T')[0];
+                eventsObj[eventDateKey] = eventsObj[eventDateKey].filter(e => e.eventDateTime !== event.eventDateTime);
+                await AsyncStorage.setItem('@events', JSON.stringify(eventsObj));
+                Alert.alert('Event deleted successfully');
+            }
         } catch (error) {
-            console.error("Error deleting event:", error);
+            console.error("Failed to delete event:", error);
         }
     };
 
     const renderEvents = () => events.map((event, index) => (
         <View key={index} style={styles.event}>
-            <Text style={styles.eventText}>
-                Time: {new Date(event.eventDateTime || event.combinedStart).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                {'\n'}Description: {event.description}
+            <Text style={styles.eventText} onPress={() => {event.combinedStart !== undefined ? navigation.navigate("Past Workout", {workout: event}) : {}}}>
+                Time: {event.eventDateTime !== undefined ? new Date(event.eventDateTime || event.combinedStart).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                : new Date(event.combinedStart).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                {'\n'}Description: {event.description !== undefined ? event.description : event.wType}
             </Text>
             <Button
                 title="Start Workout"
@@ -149,4 +83,3 @@ const styles = StyleSheet.create({
 });
 
 export default Day;
-/*}
