@@ -29,6 +29,13 @@ const NumericTextInput = ({label, onNumChange, minVal, maxVal}) => {
             value={text}
             onChangeText={handleTextChange}
             keyboardType="numeric"
+            mode='flat'
+            selectionColor='darkgray'
+            cursorColor='darkgray'
+            underlineColor='darkgray'
+            activeUnderlineColor='black'
+            activeOutlineColor='gray'
+            backgroundColor='white'
         />
         <HelperText type="error" visible={error !== ''}>
             {error}
