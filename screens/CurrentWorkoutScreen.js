@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Button, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Platform } from "react-native";
+import {Card, Button, TextInput} from "react-native-paper"
 import { useRoute, useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -67,37 +68,119 @@ function CurrentWorkoutScreen() {
     };
     
 
-    const formatTime = () => {
-        if (timer < 60) {
-            return `${timer} seconds`;
+    const formatTime = (timer) => {
+        const hours = Math.floor(timer / 3600);
+        const minutes = Math.floor((timer % 3600) / 60);
+        const seconds = timer % 60;
+    
+        const formattedHours = hours.toString().padStart(2, '0');
+        const formattedMinutes = minutes.toString().padStart(2, '0');
+        const formattedSeconds = seconds.toString().padStart(2, '0');
+    
+        return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+    }
+
+    const checkWType = (workout) => {
+        if (workout.workoutType === "running") {
+          return styles.runningColor;
+        } else if (workout.workoutType === "biking") {
+          return styles.bikingColor;
+        } else if (workout.workoutType === "weights") {
+          return styles.weightsColor;
+        } else if (workout.workoutType === "pushups") {
+          return styles.pushupsColor;
+        } else if (workout.workoutType === "squats") {
+          return styles.squatsColor;
+        } else if (workout.workoutType === "muscles") {
+          return styles.muscleColor;
+        } else {
+          return { backgroundColor: "grey" };
         }
-        return `${(timer / 60).toFixed(2)} minutes`;
-    };
+      }
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.header}>Current Workout</Text>
-            <Text>Type: {workout?.workoutType}</Text>
-            <Text>Notes: {workout?.description}</Text>
-            <Text>Timer: {formatTime()}</Text>
-            {!workoutStarted && <Button title="Start Workout" onPress={startTimer} />}
-            {workoutStarted && <Button title="End Workout" onPress={endWorkout} />}
+        
+        <View style={[styles.cardContent, checkWType(workout)]}>
+            <Text style={styles.typeText}> {workout?.workoutType.charAt(0).toUpperCase() + workout?.workoutType.slice(1)}</Text>
+            <Text style={styles.timerText}>{formatTime(timer)}</Text>
+            {workout.description && <TextInput 
+                label='Notes' 
+                multiline={true} 
+                value={workout.description}
+                disabled='true'
+                mode='flat'
+                underlineColor='black'
+                backgroundColor='white'
+                textColor='black'
+            />}
+            <View style={styles.buttonContainer}>
+                {!workoutStarted && <Button type='contained' buttonColor='tomato' textColor='white' onPress={startTimer} >Start Workout</Button>}
+                {workoutStarted && <Button type='contained' buttonColor='tomato' textColor='white' onPress={endWorkout} >End Workout</Button>}
+            </View>
         </View>
+        
     );
 }
 
 const styles = StyleSheet.create({
-    container: {
+    
+    cardContent: {
         flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: 20
+        justifyContent: 'space-between',
+        margin: 20,
+        padding:20,
+        borderRadius: 20,
+        ...Platform.select({
+            ios: {
+                shadowColor: '#000',
+                shadowOffset: { width: 0, height: 2 },
+                shadowOpacity: 0.1,
+                shadowRadius: 3,
+            },
+            android: {
+                elevation: 5,
+            },
+        }),
     },
-    header: {
-        fontSize: 24,
+    typeText: {
+        marginTop: 10, 
+        fontSize: 24, 
+        alignSelf: 'center',
         fontWeight: 'bold',
-        marginBottom: 10
-    }
+    },
+    timerText: {
+        fontSize: 50, 
+        textAlign: 'center', 
+        marginTop: 20, 
+        alignSelf: 'center'
+    },
+    notesText: {
+        textAlign: 'center',
+        marginBottom: 20, 
+        alignSelf: 'center'
+    },
+    buttonContainer: {
+        width: '100%', 
+        alignSelf: 'center'
+    },
+    bikingColor: {
+      backgroundColor: "#ff8282"
+    },
+    runningColor: {
+      backgroundColor: "#64b3ff"
+    },
+    weightsColor: {
+      backgroundColor: "#9acd32"
+    },
+    pushupsColor: {
+      backgroundColor: "#ffd700"
+    },
+    squatsColor: {
+      backgroundColor: "#dda0dd"
+    },
+    muscleColor: {
+      backgroundColor: "#ffa500"
+    },
 });
 
 export default CurrentWorkoutScreen;
