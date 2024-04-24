@@ -122,10 +122,10 @@ const styles = StyleSheet.create({
         marginHorizontal: 2 
     },
     bikingColor: {
-        backgroundColor: "#dc143c"
+        backgroundColor: "#ff8282"
     },
     runningColor: {
-        backgroundColor: "#1e90ff"
+        backgroundColor: "#64b3ff"
     },
     weightsColor: {
         backgroundColor: "#9acd32"
