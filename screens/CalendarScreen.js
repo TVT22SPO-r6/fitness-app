@@ -146,9 +146,9 @@ return (
             enableSwipeMonths={true}
             markedDates={markedDates}
         />
-        <AddEventButton onAddEvent={loadEvents} />
+        <AddEventButton onAddEvent={handleAddEvent} />
         <ScrollView>
-            <Day onEventChange={loadEvents} selectedDate={selectedDate} events={workoutsEvents[selectedDate] || []} workoutColors={workoutColors} />
+            <Day onEventChange={handleEventChange} selectedDate={selectedDate} events={workoutsEvents[selectedDate] || []} workoutColors={workoutColors} />
         </ScrollView>
     </View>
 );
