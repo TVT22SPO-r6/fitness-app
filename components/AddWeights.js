@@ -10,7 +10,7 @@ import {useState, Component, useEffect} from 'react';
 import { View} from 'react-native';
 import { TextInput, PaperProvider, Text, Button, Portal, Dialog} from 'react-native-paper';
 
-export default function AddWeights() {
+export default function AddWeights({sType, date, startTime, endTime, desc}) {
     const wType  = "weights"
     const [dateFromChild, setDateFromChild] = useState(null)
     const [startTimeFromChild, setStartTimeFromChild] = useState(null)
