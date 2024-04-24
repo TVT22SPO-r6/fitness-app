@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, ScrollView } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AddEventButton from '../components/AddEventButton';
@@ -136,40 +136,42 @@ const CalendarScreen = () => {
     setMarkedDates(newMarkedDates);
 };
 
-    return (
-        <View style={styles.container}>
-            <Calendar
-                current={selectedDate}
-                onDayPress={(day) => setSelectedDate(day.dateString)}
-                monthFormat={'MMMM yyyy'}
-                firstDay={1}
-                enableSwipeMonths={true}
-                markedDates={markedDates}
-            />
-            <AddEventButton onAddEvent={handleAddEvent} />
-            <Day onEventChange={handleEventChange} selectedDate={selectedDate} events={workoutsEvents[selectedDate] || []} workoutColors={workoutColors} />
-        </View>
-    );
+return (
+    <View style={styles.container}>
+        <Calendar
+            current={selectedDate}
+            onDayPress={(day) => setSelectedDate(day.dateString)}
+            monthFormat={'MMMM yyyy'}
+            firstDay={1}
+            enableSwipeMonths={true}
+            markedDates={markedDates}
+        />
+        <AddEventButton onAddEvent={loadEvents} />
+        <ScrollView>
+            <Day onEventChange={loadEvents} selectedDate={selectedDate} events={workoutsEvents[selectedDate] || []} workoutColors={workoutColors} />
+        </ScrollView>
+    </View>
+);
 };
 
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: '#f0f4f7', // Light greyish background
+      backgroundColor: '#f0f4f7',
       padding: 20,
     },
     calendarStyle: {
       borderWidth: 1,
-      borderColor: '#d1e1df', // Light border for calendar
-      borderRadius: 10, // Rounded corners
-      shadowOpacity: 0.1, // Subtle shadow for depth
+      borderColor: '#d1e1df',
+      borderRadius: 10,
+      shadowOpacity: 0.1,
       shadowRadius: 4,
       shadowColor: '#000',
       shadowOffset: { height: 2, width: 0 },
-      elevation: 3, // For Android shadow
+      elevation: 3,
     },
     buttonStyle: {
-      backgroundColor: '#4a90e2', // Consistent button color
+      backgroundColor: '#4a90e2',
       borderRadius: 20,
       padding: 10,
       marginTop: 10,
@@ -179,5 +181,6 @@ const styles = StyleSheet.create({
       fontSize: 16,
       fontWeight: '600',
     }
-  });
+});
+
 export default CalendarScreen;
