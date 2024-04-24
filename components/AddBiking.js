@@ -87,7 +87,7 @@ export default function AddBiking({sType, date, startTime, endTime, desc}) {
       setAllRestTimes([])
     
       console.log('Values saved and reset successfully');
-      navigation.goBack()
+      navigation.navigate('Clear Screen')
     }
 
     const showDialog = () => setVisible(true)

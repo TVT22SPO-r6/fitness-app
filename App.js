@@ -10,6 +10,7 @@ import NewWorkoutScreen from './screens/NewWorkoutScreen';
 import CurrentWorkoutScreen from './screens/CurrentWorkoutScreen';
 import CalendarScreen from './screens/CalendarScreen';
 import PastWorkoutScreen from './screens/PastWorkoutScreen';
+import ClearScreen from './screens/ClearScreen';
 import AlertNotification from './components/AlertNotification';
 import Clock from './screens/Clock';
 import { TimerProvider } from './screens/TimerContext';
@@ -52,6 +53,7 @@ function AppNavigator() {
         <Stack.Navigator>
             <Stack.Screen name="Main" component={BottomTabNavigator} options={{ headerShown: false }} />
             <Stack.Screen name="Current Workout" component={CurrentWorkoutScreen} />
+            <Stack.Screen name="Clear Screen" component={ClearScreen} />
             <Stack.Screen name="Past Workout" component={PastWorkoutScreen} initialParams={{ workout: null }} />
             <Stack.Screen name="Clock" component={Clock} />
         </Stack.Navigator>

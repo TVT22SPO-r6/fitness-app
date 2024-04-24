@@ -45,7 +45,7 @@ export default function SelectDate({ onDateChange }) {
                     mode="date"
                     display="default"
                     onChange={onChange}
-                    maximumDate={date}
+                    maximumDate={new Date()}
                 />
             )}
         </>

@@ -1,14 +1,15 @@
-import {PaperProvider} from "react-native-paper";
+import {Button, PaperProvider} from "react-native-paper";
 import React, { useState } from "react";
 import {StyleSheet, ScrollView, Text } from "react-native";
 import { SelectList } from 'react-native-dropdown-select-list'
 import AddWorkout from '../components/AddWorkout';
-import { useRoute } from '@react-navigation/native';
+import { useRoute , useNavigation} from '@react-navigation/native';
 
 export default function NewWorkoutScreen(){
   const [workoutType, setWorkoutType] = useState('');
   const route = useRoute();
   const params = route.params
+  const navigation = useNavigation()
 
 
 
@@ -40,14 +41,18 @@ export default function NewWorkoutScreen(){
     },
   ];
   
+  const handleCancel = () => {
+    navigation.navigate('Clear Screen')
+  }
  
 
     return (
       <PaperProvider>
-        <ScrollView style={{ padding:15 }}>
-          {params ? (
+        <ScrollView>
+          {params.wType ? (
             <>
             <AddWorkout wType={params.wType} sType='current' date={params.date} startTime={params.startTime} endTime={params.endTime} desc={params.desc}/>
+            <Button onPress={handleCancel}>Cancel</Button>
             </>
           ) : (
             <>
@@ -64,3 +69,12 @@ export default function NewWorkoutScreen(){
     );
 
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: '#fff',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+});

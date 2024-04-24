@@ -4,7 +4,7 @@ import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { View, Text, Button, ScrollView, StyleSheet, Platform, Modal } from 'react-native';
 import { Card, Avatar, IconButton } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import RNDateTimePicker from '@react-native-community/datetimepicker';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 const Feed = () => {
   const navigation = useNavigation();
@@ -14,6 +14,7 @@ const Feed = () => {
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear()); // Default to current year
   const [filteredData, setFilteredData] = useState([]);
   const [showDatePicker, setShowDatePicker] = useState(false);
+  const [isFiltered, setIsFiltered] = useState(false);
 
   useEffect(() => {
     if (isFocused) {
@@ -21,16 +22,17 @@ const Feed = () => {
     }
   }, [isFocused]);
 
-  useEffect(() => {
-    filterData();
-  }, [selectedMonth, selectedYear, data]);
 
   const fetchData = async () => {
     try {
       const jsonValue = await AsyncStorage.getItem('savedWorkouts');
       if (jsonValue !== null) {
         const parsedData = JSON.parse(jsonValue);
-        setData(parsedData);
+        const sortedData = parsedData.sort((a, b) => {
+          return new Date(b.combinedStart) - new Date(a.combinedStart);
+        })
+        setData(sortedData);
+        setFilteredData(sortedData)
       }
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -45,6 +47,7 @@ const Feed = () => {
       return itemMonth === selectedMonth && itemYear === selectedYear;
     });
     setFilteredData(filteredData);
+    setIsFiltered(true)
   };
 
   const checkWType = (workout) => {
@@ -70,9 +73,9 @@ const Feed = () => {
       const selectedDate = new Date(date);
       setSelectedYear(selectedDate.getFullYear());
       setSelectedMonth(selectedDate.getMonth());
-      filterData(); // Filter data based on selected date
+      filterData();
     }
-    setShowDatePicker(false); // Close the date picker modal
+    setShowDatePicker(false); 
   };
 
   return (
@@ -83,34 +86,24 @@ const Feed = () => {
           color = 'tomato'
           onPress={() => setShowDatePicker(true)}
         />
+       {isFiltered===true && 
+       <Button
+        title="Remove Filter"
+        color = 'tomato'
+        onPress={() => {
+          setFilteredData(data);
+          setIsFiltered(false)
+        }}
+      />}
         {showDatePicker && (
-          <Modal
-            animationType="slide"
-            transparent={true}
-            visible={showDatePicker}
-            onRequestClose={() => setShowDatePicker(false)}
-          >
-            <View style={styles.modalContainer}>
-              <View style={styles.modalContent}>
-                <Button
-                  title="Show all Workouts"
-                  
-                  color = 'tomato'
-                  onPress={() => {
-                    setFilteredData(data);
-                    setShowDatePicker(false);
-                  }}
-                />
-                <RNDateTimePicker
+            <View >
+                <DateTimePicker
                   value={new Date(selectedYear, selectedMonth)}
                   mode="date"
                   display="spinner"
                   onChange={handleDateChange}
-                  
                 />
-              </View>
             </View>
-          </Modal>
         )}
       </View>
       {filteredData.map((item, index) => {
@@ -126,10 +119,11 @@ const Feed = () => {
             onPress={() => navigation.navigate("Past Workout", { workout: item })}
           >
             <Card.Title
-              title={item.wType}
+              title={item.wType.charAt(0).toUpperCase() + item.wType.slice(1)}
+              titleStyle={{fontWeight:'bold'}}
               subtitle={`For ${durationHours} hrs`}
               right={() =>
-                <Text>
+                <Text style={{textAlign: 'right', paddingRight:10}}>
                   {`
                                     ${startDate.toLocaleDateString()}\n
                                     ${startDate.toLocaleTimeString([], {
@@ -142,12 +136,12 @@ const Feed = () => {
             />
             <Card.Content>
               {item.distance ? (
-                <Text>Distance: {item.distance}</Text>
+                <Text>Distance: {item.distance} km</Text>
               ) : (
                 <></>
               )}
               {item.weight ? (
-                <Text>Weight: {item.weight}</Text>
+                <Text>Weight: {item.weight} kg</Text>
               ) : (
                 <></>
               )}
@@ -218,7 +212,7 @@ const styles = StyleSheet.create({
   },
   modalContainer: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'top',
     alignItems: 'center',
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },

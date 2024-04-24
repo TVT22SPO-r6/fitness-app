@@ -101,7 +101,7 @@ export default function AddWeights({sType, date, startTime, endTime, desc}) {
       setAllRestTimes([])
     
       console.log('Values saved and reset successfully');
-      navigation.goBack()
+      navigation.navigate('Clear Screen')
     }
 
     const showDialog = () => setVisible(true)
@@ -125,7 +125,7 @@ export default function AddWeights({sType, date, startTime, endTime, desc}) {
           <RestTime onChange={handleRestTimesChange}/>
           <View>
       </View>
-          <View style={{ flexDirection: 'row' }}>
+          <View style={{ flexDirection: 'row' , justifyContent: 'space-between'}}>
             <NumericTextInput label='Weight(kg)' onNumChange={handleNumChange} minVal={0} maxVal={999}/>
             <NumericTextInput label='Reps' onNumChange={handleNum2Change} minVal={0} maxVal={999}/>
             <NumericTextInput label='Sets' onNumChange={handleNum3Change} minVal={0} maxVal={999}/>

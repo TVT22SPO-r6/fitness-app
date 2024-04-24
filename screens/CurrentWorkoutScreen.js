@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Platform } from "react-native";
 import {Card, Button, TextInput} from "react-native-paper"
-import { useRoute, useNavigation } from '@react-navigation/native';
+import { useRoute, useNavigation} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function CurrentWorkoutScreen() {
