@@ -19,6 +19,10 @@ const CalendarScreen = () => {
     }
   }, [isFocused]);
 
+    const handleEventChange = async () => {
+        loadEvents()
+    }
+
     const loadEvents = async () => {
         try {
             const storedEvents = await AsyncStorage.getItem('@events');
@@ -97,7 +101,7 @@ const CalendarScreen = () => {
                 markedDates={{...markedDates, [selectedDate]: { ...markedDates[selectedDate], selected: true }}}
             />
             <AddEventButton onAddEvent={handleAddEvent} />
-            <Day selectedDate={selectedDate} events={workoutsEvents[selectedDate] || []} />
+            <Day onEventChange={handleEventChange} selectedDate={selectedDate} events={workoutsEvents[selectedDate] || []} />
         </View>
     );
 };
