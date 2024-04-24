@@ -2,8 +2,9 @@ import React from 'react';
 import { View, Text, StyleSheet, Button, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { workoutColors } from '../components/constants';
 
-const Day = ({ onEventChange, selectedDate, events }) => {
+const Day = ({ onEventChange, selectedDate, events, workoutColors }) => {
     const navigation = useNavigation();
 
     const handleStartWorkout = (workout) => {
@@ -27,7 +28,7 @@ const Day = ({ onEventChange, selectedDate, events }) => {
     };
 
     const renderEvents = () => events.map((event, index) => (
-        <View key={index} style={styles.event}>
+        <View key={index} style={[styles.event, { backgroundColor: workoutColors[event.workoutType] || '#1E90FF' }]}>
             <Text style={styles.eventText} onPress={() => {event.combinedStart !== undefined ? navigation.navigate("Past Workout", {workout: event}) : {}}}>
                 Time: {event.eventDateTime !== undefined ? new Date(event.eventDateTime || event.combinedStart).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
                 : new Date(event.combinedStart).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}

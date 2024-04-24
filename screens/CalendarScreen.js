@@ -6,6 +6,7 @@ import AddEventButton from '../components/AddEventButton';
 import Day from '../components/Day';
 import { useIsFocused } from '@react-navigation/native';
 import AlertNotification from '../components/AlertNotification';
+import { workoutColors } from '../components/constants';
 
 const CalendarScreen = () => {
     const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
@@ -48,6 +49,7 @@ const CalendarScreen = () => {
     const handleEventChange = async () => {
         loadEvents()
     }
+
 
     const loadEvents = async () => {
         try {
@@ -100,21 +102,39 @@ const CalendarScreen = () => {
 
   const handleAddEvent = async (description, eventDateTime, workoutType) => {
     const newEvents = { ...events, [eventDateTime.split(' ')[0]]: [...(events[eventDateTime.split(' ')[0]] || []), { description, eventDateTime, workoutType }] };
+    const newEvent = {
+        description, 
+        eventDateTime, 
+        workoutType, // Ensure this data is correctly provided when the event is created
+      };
     setEvents(newEvents);
     await AsyncStorage.setItem('@events', JSON.stringify(newEvents));
     updateCalendarMarks(newEvents);
     loadEvents()
   };
 
-    const updateCalendarMarks = (events) => {
-        const newMarkedDates = {};
-        Object.keys(events).forEach(date => {
-            if (events[date] && events[date].length > 0) {
-                newMarkedDates[date] = { marked: true };
-            }
-        });
-        setMarkedDates(newMarkedDates);
-    };
+  const updateCalendarMarks = (events) => {
+    const newMarkedDates = {};
+    Object.keys(events).forEach(date => {
+        let dots = [];
+        let dotColor;
+
+        if (events[date] && events[date].length > 0) {
+            // Gather all event types for the day and apply the correct color
+            events[date].forEach(event => {
+                dotColor = workoutColors[event.workoutType] || '#000'; // Fallback color is black
+                dots.push({ key: event.id, color: dotColor });
+            });
+
+            newMarkedDates[date] = {
+                marked: true,
+                dots: dots,  // Apply the dots array here
+                selectedColor: dotColor, // Optional: sets the background color for the selected date
+            };
+        }
+    });
+    setMarkedDates(newMarkedDates);
+};
 
     return (
         <View style={styles.container}>
@@ -127,17 +147,37 @@ const CalendarScreen = () => {
                 markedDates={markedDates}
             />
             <AddEventButton onAddEvent={handleAddEvent} />
-            <Day onEventChange={handleEventChange} selectedDate={selectedDate} events={workoutsEvents[selectedDate] || []} />
+            <Day onEventChange={handleEventChange} selectedDate={selectedDate} events={workoutsEvents[selectedDate] || []} workoutColors={workoutColors} />
         </View>
     );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'white',
-    padding: 20,
-  },
-});
-
+    container: {
+      flex: 1,
+      backgroundColor: '#f0f4f7', // Light greyish background
+      padding: 20,
+    },
+    calendarStyle: {
+      borderWidth: 1,
+      borderColor: '#d1e1df', // Light border for calendar
+      borderRadius: 10, // Rounded corners
+      shadowOpacity: 0.1, // Subtle shadow for depth
+      shadowRadius: 4,
+      shadowColor: '#000',
+      shadowOffset: { height: 2, width: 0 },
+      elevation: 3, // For Android shadow
+    },
+    buttonStyle: {
+      backgroundColor: '#4a90e2', // Consistent button color
+      borderRadius: 20,
+      padding: 10,
+      marginTop: 10,
+    },
+    buttonText: {
+      color: '#fff',
+      fontSize: 16,
+      fontWeight: '600',
+    }
+  });
 export default CalendarScreen;
