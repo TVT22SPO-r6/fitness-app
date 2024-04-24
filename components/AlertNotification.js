@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
-import { Modal, Text, View, StyleSheet } from 'react-native';
+import { Modal, Text, View, Button, StyleSheet } from 'react-native';
 
-function AlertNotification({ show }) {
+function AlertNotification({ show, onClose }) {
   // Removed the local showNotification state and useEffect that manages it
   // Instead, directly use the show prop to control modal visibility
   
@@ -10,11 +10,19 @@ function AlertNotification({ show }) {
       animationType="slide"
       transparent={true}
       visible={show}
-      onRequestClose={() => {/* Handle modal close, if necessary */}}
+      onRequestClose={onClose}
     >
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
           <Text style={styles.modalText}>Your workout is about to start!</Text>
+          <Button
+  title="Let's go"
+  color="blue"
+  onPress={() => {
+    onClose(); // Close the popup
+  }}
+/>
+
         </View>
       </View>
     </Modal>

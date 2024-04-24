@@ -11,7 +11,7 @@ const NumberSelector = ({ onSelect }) => {
 
   return (
     <View style={styles.container}>
-        <Text>Intensity of Workout</Text>
+        <Text style={styles.text}>Intensity</Text>
       {[1, 2, 3, 4, 5].map((number) => (
         <TouchableOpacity
           key={number}
@@ -32,8 +32,10 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: 20,
-    marginTop: 20,
+    paddingLeft: 10,
+    marginTop: 15,
+    marginBottom: 15,
+    alignContent: 'center'
   },
   numberButton: {
     backgroundColor: '#e0e0e0',
@@ -41,12 +43,18 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   selectedButton: {
-    backgroundColor: 'blue', // Change to your desired color
+    backgroundColor: 'tomato', 
   },
   numberText: {
     fontSize: 18,
     fontWeight: 'bold',
     color: 'black',
+  },
+  text: {
+    fontSize: 18,
+    color: 'black',
+    paddingTop: 5,
+    marginLeft: 0
   },
 });
 
