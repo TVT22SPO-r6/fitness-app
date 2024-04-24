@@ -49,7 +49,7 @@ export default function NewWorkoutScreen(){
     return (
       <PaperProvider>
         <ScrollView>
-          {params.wType ? (
+          {params?.wType ? (
             <>
             <AddWorkout wType={params.wType} sType='current' date={params.date} startTime={params.startTime} endTime={params.endTime} desc={params.desc}/>
             <Button onPress={handleCancel}>Cancel</Button>
