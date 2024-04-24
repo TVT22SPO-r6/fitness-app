@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Text, View, StyleSheet, Button, FlatList } from "react-native";
 import DeleteWorkout from "../components/DeleteWorkout";
+import { Card } from "react-native-paper";
 
 export default function PastWorkoutScreen({route, navigation}){
     const { workout } = route.params
@@ -88,164 +89,212 @@ export default function PastWorkoutScreen({route, navigation}){
     
     if(data.wType === "running" || data.wType === "biking"){
         return (
-            <View style={styles.container}>
-                <View style={styles.titleBox}>
-                    <Text style={styles.titleFont} >{data.wType}</Text>
-                    <Text>{data.combinedStart.split("T")[0]}</Text>
-                    <Text>{new Date(data.combinedStart).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text>
-                </View>
-                <View style={styles.infoBox}>
-                    <View style={styles.infoTextContainer}>
+            <Card style={styles.container}>
+                <Card.Title
+                    style={styles.titleBox}
+                    titleStyle={{fontWeight: "bold"}}
+                    title={data.wType}
+                    subtitle={`For ${duration} mins`}
+                    right={() => 
+                        <Text style={{paddingRight: 10}}>
+                            {`
+                            ${new Date(data.combinedStart).toLocaleDateString()}\n
+                            ${new Date(data.combinedStart).toLocaleTimeString([],{
+                                hour: "2-digit",
+                                minute: "2-digit"
+                            })}
+                            `}
+                        </Text>
+                    }
+                />
+                <Card style={styles.infoBox}>
+                    <Card.Content style={styles.infoTextContainer}>
                         <Text style={[styles.infoText, {fontWeight: "bold"}]}>Duration:</Text>
                         <Text style={styles.infoText}>{formatDuration(duration)}</Text>
-                    </View>
-                    <View style={styles.infoTextContainer}>
+                    </Card.Content>
+                    <Card.Content style={styles.infoTextContainer}>
                         <Text style={[styles.infoText, {fontWeight: "bold"}]}>Distance:</Text>
                         <Text style={styles.infoText}>{data.distance} km</Text>
-                    </View>
+                    </Card.Content>
                     { data.restTimes.length === 0 ? <></> :
-                    <View style={styles.infoTextContainer}>
+                    <Card.Content style={styles.infoTextContainer}>
                         <Text style={[styles.infoText, {fontWeight: "bold"}]}>Rest:</Text>
                         <Text style={styles.infoText}>{restTimes} min</Text>
-                    </View>
+                    </Card.Content>
                     }
-                    <View style={styles.infoTextContainer}>
+                    <Card.Content style={styles.infoTextContainer}>
                         <Text style={[styles.infoText, {fontWeight: "bold"}]}>Calories Burned:</Text>
                         <Text style={styles.infoText}>{calculateCalories()} kcal</Text>
-                    </View>
-                    <View style={styles.infoTextContainer}>
+                    </Card.Content>
+                    <Card.Content style={styles.infoTextContainer}>
                         <Text style={[styles.infoText, {fontWeight: "bold"}]}>Notes:</Text>
                         <Text style={styles.infoText}>{data.notes}</Text>
-                    </View>
-                </View>
-                <View style={{paddingBottom: 15}}>
+                    </Card.Content>
+                </Card>
+                <Card style={styles.deleteButton}>
                     <Button title="Delete workout" color="red" onPress={() => handleDelete(data)} />
-                </View>
-            </View>
+                </Card>
+            </Card>
         );
     }else if(data.wType === "weights"){
         return (
-            <View style={styles.container}>
-                <View style={styles.titleBox}>
-                    <Text style={styles.titleFont} >{data.wType}</Text>
-                    <Text>{data.combinedStart.split("T")[0]}</Text>
-                    <Text>{new Date(data.combinedStart).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text>
-                </View>
-                <View style={styles.infoBox}>
-                    <View style={styles.infoTextContainer}>
+            <Card style={styles.container}>
+                <Card.Title
+                    style={styles.titleBox}
+                    titleStyle={{fontWeight: "bold"}}
+                    title={data.wType}
+                    subtitle={`For ${duration} mins`}
+                    right={() => 
+                        <Text style={{paddingRight: 10}}>
+                            {`
+                            ${new Date(data.combinedStart).toLocaleDateString()}\n
+                            ${new Date(data.combinedStart).toLocaleTimeString([],{
+                                hour: "2-digit",
+                                minute: "2-digit"
+                            })}
+                            `}
+                        </Text>
+                    }
+                />
+                <Card style={styles.infoBox}>
+                    <Card.Content style={styles.infoTextContainer}>
                         <Text style={[styles.infoText, {fontWeight: "bold"}]}>Duration:</Text>
                         <Text style={styles.infoText}>{formatDuration(duration)}</Text>
-                    </View>
-                    <View style={styles.infoTextContainer}>
+                    </Card.Content>
+                    <Card.Content style={styles.infoTextContainer}>
                         <Text style={[styles.infoText, {fontWeight: "bold"}]}>Weights:</Text>
                         <Text style={styles.infoText}>{data.weight} kg</Text>
-                    </View>
-                    <View style={styles.infoTextContainer}>
+                    </Card.Content>
+                    <Card.Content style={styles.infoTextContainer}>
                         <Text style={[styles.infoText, {fontWeight: "bold"}]}>Reps:</Text>
                         <Text style={styles.infoText}>{data.reps}</Text>
-                    </View>
+                    </Card.Content>
                     { data.restTimes.length === 0 ? <></> :
-                    <View style={styles.infoTextContainer}>
+                    <Card.Content style={styles.infoTextContainer}>
                         <Text style={[styles.infoText, {fontWeight: "bold"}]}>Rest:</Text>
                         <Text style={styles.infoText}>{restTimes} min</Text>
-                    </View>
+                    </Card.Content>
                     }
-                    <View style={styles.infoTextContainer}>
+                    <Card.Content style={styles.infoTextContainer}>
                         <Text style={[styles.infoText, {fontWeight: "bold"}]}>Calories Burned:</Text>
                         <Text style={styles.infoText}>{calculateCalories()} kcal</Text>
-                    </View>
-                    <View style={styles.infoTextContainer}>
+                    </Card.Content>
+                    <Card.Content style={styles.infoTextContainer}>
                         <Text style={[styles.infoText, {fontWeight: "bold"}]}>Notes:</Text>
                         <Text style={styles.infoText}>{data.notes}</Text>
-                    </View>
-                </View>
-                <View style={{paddingBottom: 15}}>
+                    </Card.Content>
+                </Card>
+                <Card style={styles.deleteButton}>
                     <Button title="Delete workout" color="red" onPress={() => handleDelete(data)} />
-                </View>
-            </View>
+                </Card>
+            </Card>
         );
     }else if(data.wType === "pushups" || data.wType === "squats"){
         return (
-            <View style={styles.container}>
-                <View style={styles.titleBox}>
-                    <Text style={styles.titleFont} >{data.wType}</Text>
-                    <Text>{data.combinedStart.split("T")[0]}</Text>
-                    <Text>{new Date(data.combinedStart).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text>
-                </View>
-                <View style={styles.infoBox}>
-                    <View style={styles.infoTextContainer}>
+            <Card style={styles.container}>
+                <Card.Title
+                    style={styles.titleBox}
+                    titleStyle={{fontWeight: "bold"}}
+                    title={data.wType}
+                    subtitle={`For ${duration} mins`}
+                    right={() => 
+                        <Text style={{paddingRight: 10}}>
+                            {`
+                            ${new Date(data.combinedStart).toLocaleDateString()}\n
+                            ${new Date(data.combinedStart).toLocaleTimeString([],{
+                                hour: "2-digit",
+                                minute: "2-digit"
+                            })}
+                            `}
+                        </Text>
+                    }
+                />
+                <Card style={styles.infoBox}>
+                    <Card.Content style={styles.infoTextContainer}>
                         <Text style={[styles.infoText, {fontWeight: "bold"}]}>Duration:</Text>
                         <Text style={styles.infoText}>{formatDuration(duration)}</Text>
-                    </View>
-                    <View style={styles.infoTextContainer}>
+                    </Card.Content>
+                    <Card.Content style={styles.infoTextContainer}>
                         <Text style={[styles.infoText, {fontWeight: "bold"}]}>Reps:</Text>
                         <Text style={styles.infoText}>{data.reps}</Text>
-                    </View>
+                    </Card.Content>
                     { data.restTimes.length === 0 ? <></> :
-                    <View style={styles.infoTextContainer}>
+                    <Card.Content style={styles.infoTextContainer}>
                         <Text style={[styles.infoText, {fontWeight: "bold"}]}>Rest:</Text>
                         <Text style={styles.infoText}>{restTimes} min</Text>
-                    </View>
+                    </Card.Content>
                     }
-                    <View style={styles.infoTextContainer}>
+                    <Card.Content style={styles.infoTextContainer}>
                         <Text style={[styles.infoText, {fontWeight: "bold"}]}>Calories Burned:</Text>
                         <Text style={styles.infoText}>{calculateCalories()} kcal</Text>
-                    </View>
-                    <View style={styles.infoTextContainer}>
+                    </Card.Content>
+                    <Card.Content style={styles.infoTextContainer}>
                         <Text style={[styles.infoText, {fontWeight: "bold"}]}>Notes:</Text>
                         <Text style={styles.infoText}>{data.notes}</Text>
-                    </View>
-                </View>
-                <View style={{paddingBottom: 15}}>
+                    </Card.Content>
+                </Card>
+                <Card style={styles.deleteButton}>
                     <Button title="Delete workout" color="red" onPress={() => handleDelete(data)} />
-                </View>
-            </View>
+                </Card>
+            </Card>
         );
     }else if(data.wType === "muscles"){
         return (
-            <View style={styles.container}>
-                <View style={styles.titleBox}>
-                    <Text style={styles.titleFont} >{data.wType}</Text>
-                    <Text>{data.combinedStart.split("T")[0]}</Text>
-                    <Text>{new Date(data.combinedStart).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text>
-                </View>
-                <View style={styles.infoBox}>
-                    <View style={styles.infoTextContainer}>
+            <Card style={styles.container}>
+                <Card.Title
+                    style={styles.titleBox}
+                    titleStyle={{fontWeight: "bold"}}
+                    title={data.wType}
+                    subtitle={`For ${duration} mins`}
+                    right={() => 
+                        <Text style={{paddingRight: 10}}>
+                            {`
+                            ${new Date(data.combinedStart).toLocaleDateString()}\n
+                            ${new Date(data.combinedStart).toLocaleTimeString([],{
+                                hour: "2-digit",
+                                minute: "2-digit"
+                            })}
+                            `}
+                        </Text>
+                    }
+                />
+                <Card style={styles.infoBox}>
+                    <Card.Content style={styles.infoTextContainer}>
                         <Text style={[styles.infoText, {fontWeight: "bold"}]}>Duration:</Text>
                         <Text style={styles.infoText}>{formatDuration(duration)}</Text>
-                    </View>
-                    <View style={styles.infoTextContainer}>
+                    </Card.Content>
+                    <Card.Content style={styles.infoTextContainer}>
                         <Text style={[styles.infoText, {fontWeight: "bold"}]}>Muscle sets:</Text>
                         <FlatList style={{flex: 1, textAlign: "justify"}} data={data.muscleSets} renderItem={({item}) =>
                             <Text style={styles.infoText}>{item.muscleType}: {item.weight} kg, {item.reps}x{item.sets}</Text>
                         }/>
-                    </View>
+                    </Card.Content>
                     { data.restTimes.length === 0 ? <></> :
-                    <View style={styles.infoTextContainer}>
+                    <Card.Content style={styles.infoTextContainer}>
                         <Text style={[styles.infoText, {fontWeight: "bold"}]}>Rest:</Text>
                         <Text style={styles.infoText}>{restTimes} min</Text>
-                    </View>
+                    </Card.Content>
                     }
-                    <View style={styles.infoTextContainer}>
+                    <Card.Content style={styles.infoTextContainer}>
                         <Text style={[styles.infoText, {fontWeight: "bold"}]}>Calories Burned:</Text>
                         <Text style={styles.infoText}>{calculateCalories()} kcal</Text>
-                    </View>
-                    <View style={styles.infoTextContainer}>
+                    </Card.Content>
+                    <Card.Content style={styles.infoTextContainer}>
                         <Text style={[styles.infoText, {fontWeight: "bold"}]}>Notes:</Text>
                         <Text style={styles.infoText}>{data.notes}</Text>
-                    </View>
-                </View>
-                <View style={{paddingBottom: 15}}>
+                    </Card.Content>
+                </Card>
+                <Card style={styles.deleteButton}>
                     <Button title="Delete workout" color="red" onPress={() => handleDelete(data)} />
-                </View>
-            </View>
+                </Card>
+            </Card>
         );
     }else{
-        <View style={styles.container}>
-            <View style={styles.titleBox}>
+        <Card style={styles.container}>
+            <Card.Content style={styles.titleBox}>
                 <Text style={styles.titleFont} >Couldn't find workout</Text>
-            </View>
-        </View>
+            </Card.Content>
+        </Card>
     }
 }
 
@@ -255,32 +304,26 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         alignItems: "center",
         justifyContent: "center",
+        padding: 2
     },
     titleBox: {
         flex: 1,
         borderColor: "black",
+        width: "100%",
         borderWidth: 2,
         borderRadius: 20,
-        paddingVertical: 10,
-        paddingHorizontal: 100,
-        marginHorizontal: 25,
-        marginVertical: 10,
+        marginHorizontal: 2,
+        marginVertical: 5,
         alignItems: "center",
         justifyContent: "center",
-        //backgroundColor: "chartreuse",
-        minWidth: 350,
     },
     infoBox: {
         flex: 12,
         borderColor: "black",
         borderWidth: 2,
         borderRadius: 20,
-        //paddingVertical: 10,
-        //paddingHorizontal: 100,
-        marginHorizontal: 25,
-        marginVertical: 20,
-        minWidth: 350,
-        //backgroundColor: "chartreuse"
+        marginHorizontal: 2,
+        marginVertical: 5,
     },
     infoTextContainer: {
         flexDirection: "row",
@@ -297,4 +340,9 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: "bold",
     },
+    deleteButton: {
+        paddingBottom: 15,
+        width: "80%",
+        alignSelf: "center"
+    }
 });
