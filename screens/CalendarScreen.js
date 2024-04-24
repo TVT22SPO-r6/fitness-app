@@ -16,11 +16,11 @@ const CalendarScreen = () => {
     const isFocused = useIsFocused();
     const [handledEvents, setHandledEvents] = useState(new Set());
 
-  useEffect(() => {
-    if(isFocused){
-        loadEvents();
-    }
-  }, [isFocused]);
+    useEffect(() => {
+        if (isFocused) {
+            loadEvents();
+        }
+    }, [isFocused]);
 
     useEffect(() => {
       const timer = setInterval(() => {
