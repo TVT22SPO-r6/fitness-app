@@ -38,17 +38,13 @@ export default function NewWorkoutScreen(){
       key: "muscles",
       value: "Muscle Training",
     },
-    {
-      key: "savedData",
-      value: "All Saved Data",
-    },
   ];
   
  
 
     return (
       <PaperProvider>
-        <ScrollView>
+        <ScrollView style={{ padding:15 }}>
           {params ? (
             <>
             <AddWorkout wType={params.wType} sType='current' date={params.date} startTime={params.startTime} endTime={params.endTime} desc={params.desc}/>
@@ -68,12 +64,3 @@ export default function NewWorkoutScreen(){
     );
 
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-});

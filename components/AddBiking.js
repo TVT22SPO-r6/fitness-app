@@ -7,7 +7,7 @@ import NumberSelector from './NumberSelector';
 import RestTime from './RestTime';
 import saveData from './SaveData';
 import {useState, Component, useEffect} from 'react';
-import { View} from 'react-native';
+import { View, StyleSheet} from 'react-native';
 import { TextInput, PaperProvider, Text, Button, Portal, Dialog} from 'react-native-paper';
 
 export default function AddBiking({sType, date, startTime, endTime, desc}) {
@@ -96,13 +96,13 @@ export default function AddBiking({sType, date, startTime, endTime, desc}) {
     return (
       <PaperProvider>
         {sType === 'current' ? (
-         <View style={{ flexDirection: 'row' }}>
+         <View style={{ flexDirection: 'row' , justifyContent: 'space-between'}}>
           <TextInput label='Date' mode="outlined" placeholder='Date' editable={false} selectTextOnFocus={false} value={displayDate.toLocaleDateString()}/>
           <TextInput label='Start Time' mode="outlined" placeholder='Start Time' editable={false} selectTextOnFocus={false} value={displaySTime.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}/>
           <TextInput label='End Time' mode="outlined" placeholder='End Time' editable={false} selectTextOnFocus={false} value={displayETime.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}/>
         </View> 
         ) : (
-          <View style={{ flexDirection: 'row' }}>
+          <View style={{ flexDirection: 'row' , justifyContent: 'space-between'}}>
             <SelectDate onDateChange={handleDateChange}/>
             <SelectTime label="Start Time" onTimeChange={handleStartTimeChange}/>
             <SelectTime label="End Time" onTimeChange={handleEndTimeChange}/>
@@ -110,11 +110,23 @@ export default function AddBiking({sType, date, startTime, endTime, desc}) {
         )}
           <RestTime onChange={handleRestTimesChange}/>
           <View>
-      </View>
+      </View >
           <NumericTextInput label='Distance (km)' onNumChange={handleNumChange} minVal={0} maxVal={200}/>
-          <TextInput placeholder='Notes' multiline={true} onChangeText={handleNotesChange} value={notes}/>
+          <TextInput 
+          label='Notes' 
+          multiline={true} 
+          onChangeText={handleNotesChange} 
+          value={notes}
+          mode='flat'
+          selectionColor='darkgray'
+          cursorColor='darkgray'
+          underlineColor='darkgray'
+          activeUnderlineColor='black'
+          activeOutlineColor='gray'
+          backgroundColor='white'
+          />
           <NumberSelector onSelect={handleNumberSelect} />
-          <Button onPress={() => saveDataAndReset(wType, dateFromChild, startTimeFromChild, endTimeFromChild, numFromChild, intensity, notes, allRestTimes)} mode='contained'>Add Workout</Button>
+          <Button buttonColor='tomato' onPress={() => saveDataAndReset(wType, dateFromChild, startTimeFromChild, endTimeFromChild, numFromChild, intensity, notes, allRestTimes)} mode='contained' style={{marginBottom:20}}>Add Workout</Button>
           <Portal>
             <Dialog visible={visible} onDismiss={hideDialog}>
               <Dialog.Title>Alert</Dialog.Title>
@@ -128,5 +140,7 @@ export default function AddBiking({sType, date, startTime, endTime, desc}) {
           </Portal>
       </PaperProvider>
     );
+
+    
   
 }

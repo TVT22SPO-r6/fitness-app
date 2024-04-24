@@ -13,7 +13,6 @@ import PastWorkoutScreen from './screens/PastWorkoutScreen';
 import AlertNotification from './components/AlertNotification';
 import Clock from './screens/Clock';
 import { TimerProvider } from './screens/TimerContext';
-import { WorkoutProvider } from './components/WorkoutContext';
 import { Ionicons } from '@expo/vector-icons';
 
 
