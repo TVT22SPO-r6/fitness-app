@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Button, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const Day = ({ selectedDate, events }) => {
+const Day = ({ onEventChange, selectedDate, events }) => {
     const navigation = useNavigation();
 
     const handleStartWorkout = (workout) => {
@@ -23,6 +23,7 @@ const Day = ({ selectedDate, events }) => {
         } catch (error) {
             console.error("Failed to delete event:", error);
         }
+        onEventChange()
     };
 
     const renderEvents = () => events.map((event, index) => (
