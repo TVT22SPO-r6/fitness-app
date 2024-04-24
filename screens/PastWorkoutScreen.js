@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Text, View, StyleSheet, Button, FlatList } from "react-native";
+import { Text, View, StyleSheet, Button, FlatList, Alert } from "react-native";
 import DeleteWorkout from "../components/DeleteWorkout";
 import { Card } from "react-native-paper";
 
@@ -23,6 +23,16 @@ export default function PastWorkoutScreen({route, navigation}){
             combinedRests += (new Date(element.endTime) - new Date(element.startTime)) / 1000 / 60
         });
         return combinedRests
+    }
+    
+    const confirmDelete = (workout) => {
+        Alert.alert("Confirm delete", "Are you sure you want to delete this workout?", [{
+            text: "No",
+            style: "cancel"
+        },{
+            text: "Yes",
+            onPress: () => handleDelete(workout),
+        }])
     }
 
     const handleDelete = async (workout) => {
@@ -125,7 +135,7 @@ export default function PastWorkoutScreen({route, navigation}){
                         </Text>
                     }
                 />
-                <Card style={styles.infoBox}>
+                <Card style={[styles.infoBox, checkWType(data)]}>
                     <Card.Content style={styles.infoTextContainer}>
                         <Text style={[styles.infoText, {fontWeight: "bold"}]}>Duration:</Text>
                         <Text style={styles.infoText}>{formatDuration(duration)}</Text>
@@ -150,7 +160,7 @@ export default function PastWorkoutScreen({route, navigation}){
                     </Card.Content>
                 </Card>
                 <Card style={styles.deleteButton}>
-                    <Button title="Delete workout" color="red" onPress={() => handleDelete(data)} />
+                    <Button title="Delete workout" color="red" onPress={() => confirmDelete(data)} />
                 </Card>
             </Card>
         );
@@ -174,7 +184,7 @@ export default function PastWorkoutScreen({route, navigation}){
                         </Text>
                     }
                 />
-                <Card style={styles.infoBox}>
+                <Card style={[styles.infoBox, checkWType(data)]}>
                     <Card.Content style={styles.infoTextContainer}>
                         <Text style={[styles.infoText, {fontWeight: "bold"}]}>Duration:</Text>
                         <Text style={styles.infoText}>{formatDuration(duration)}</Text>
@@ -203,7 +213,7 @@ export default function PastWorkoutScreen({route, navigation}){
                     </Card.Content>
                 </Card>
                 <Card style={styles.deleteButton}>
-                    <Button title="Delete workout" color="red" onPress={() => handleDelete(data)} />
+                    <Button title="Delete workout" color="red" onPress={() => confirmDelete(data)} />
                 </Card>
             </Card>
         );
@@ -227,7 +237,7 @@ export default function PastWorkoutScreen({route, navigation}){
                         </Text>
                     }
                 />
-                <Card style={styles.infoBox}>
+                <Card style={[styles.infoBox, checkWType(data)]}>
                     <Card.Content style={styles.infoTextContainer}>
                         <Text style={[styles.infoText, {fontWeight: "bold"}]}>Duration:</Text>
                         <Text style={styles.infoText}>{formatDuration(duration)}</Text>
@@ -252,7 +262,7 @@ export default function PastWorkoutScreen({route, navigation}){
                     </Card.Content>
                 </Card>
                 <Card style={styles.deleteButton}>
-                    <Button title="Delete workout" color="red" onPress={() => handleDelete(data)} />
+                    <Button title="Delete workout" color="red" onPress={() => confirmDelete(data)} />
                 </Card>
             </Card>
         );
@@ -276,7 +286,7 @@ export default function PastWorkoutScreen({route, navigation}){
                         </Text>
                     }
                 />
-                <Card style={styles.infoBox}>
+                <Card style={[styles.infoBox, checkWType(data)]}>
                     <Card.Content style={styles.infoTextContainer}>
                         <Text style={[styles.infoText, {fontWeight: "bold"}]}>Duration:</Text>
                         <Text style={styles.infoText}>{formatDuration(duration)}</Text>
@@ -303,7 +313,7 @@ export default function PastWorkoutScreen({route, navigation}){
                     </Card.Content>
                 </Card>
                 <Card style={styles.deleteButton}>
-                    <Button title="Delete workout" color="red" onPress={() => handleDelete(data)} />
+                    <Button title="Delete workout" color="red" onPress={() => confirmDelete(data)} />
                 </Card>
             </Card>
         );
