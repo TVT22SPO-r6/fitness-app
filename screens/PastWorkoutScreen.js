@@ -156,7 +156,9 @@ export default function PastWorkoutScreen({route, navigation}){
                     </Card.Content>
                     <Card.Content style={styles.infoTextContainer}>
                         <Text style={[styles.infoText, {fontWeight: "bold"}]}>Notes:</Text>
-                        <Text style={styles.infoText} numberOfLines={15}>{data.notes}</Text>
+                    </Card.Content>
+                    <Card.Content style={styles.infoTextContainer}>
+                        <Text style={styles.infoText} numberOfLines={10}>{data.notes}</Text>
                     </Card.Content>
                 </Card>
                 <Card style={styles.deleteButton}>
@@ -209,7 +211,9 @@ export default function PastWorkoutScreen({route, navigation}){
                     </Card.Content>
                     <Card.Content style={styles.infoTextContainer}>
                         <Text style={[styles.infoText, {fontWeight: "bold"}]}>Notes:</Text>
-                        <Text style={styles.infoText}>{data.notes}</Text>
+                    </Card.Content>
+                    <Card.Content style={styles.infoTextContainer}>
+                        <Text style={styles.infoText} numberOfLines={10}>{data.notes}</Text>
                     </Card.Content>
                 </Card>
                 <Card style={styles.deleteButton}>
@@ -258,7 +262,9 @@ export default function PastWorkoutScreen({route, navigation}){
                     </Card.Content>
                     <Card.Content style={styles.infoTextContainer}>
                         <Text style={[styles.infoText, {fontWeight: "bold"}]}>Notes:</Text>
-                        <Text style={styles.infoText}>{data.notes}</Text>
+                    </Card.Content>
+                    <Card.Content style={styles.infoTextContainer}>
+                        <Text style={styles.infoText} numberOfLines={10}>{data.notes}</Text>
                     </Card.Content>
                 </Card>
                 <Card style={styles.deleteButton}>
@@ -309,7 +315,9 @@ export default function PastWorkoutScreen({route, navigation}){
                     </Card.Content>
                     <Card.Content style={styles.infoTextContainer}>
                         <Text style={[styles.infoText, {fontWeight: "bold"}]}>Notes:</Text>
-                        <Text style={styles.infoText}>{data.notes}</Text>
+                    </Card.Content>
+                    <Card.Content style={styles.infoTextContainer}>
+                        <Text style={styles.infoText} numberOfLines={10}>{data.notes}</Text>
                     </Card.Content>
                 </Card>
                 <Card style={styles.deleteButton}>
